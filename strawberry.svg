@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <defs>
+    <pattern id="strawberryPattern" x="0" y="0" width="300" height="300" patternUnits="userSpaceOnUse">
+      <rect width="300" height="300" fill="#ffe3ef" />
+      <g transform="translate(20 40)">
+        <path d="M78 0 C54 -7 19 38 30 85 C35 112 71 145 78 162 C85 145 121 112 126 85 C137 38 102 -7 78 0 Z" fill="#f54f61" />
+        <path d="M78 0 C65 0 47 16 47 29 C47 40 59 52 78 52 C97 52 109 40 109 29 C109 16 91 0 79 0 Z" fill="#ffb2ba" opacity="0.45" />
+        <circle cx="71" cy="62" r="3" fill="#fff6c0" />
+        <g fill="#3f9e45">
+          <path d="M78 0 C65 -6 60 -20 74 -18 C83 -16 86 -8 90 -10 C92 -12 97 -20 103 -18 C109 -16 109 -5 103 0 Z" />
+          <path d="M88 -6 C81 -16 94 -26 103 -18 C100 -10 97 -7 88 -6 Z" />
+          <path d="M72 -6 C69 -16 52 -18 52 -10 C60 -7 64 -6 72 -6 Z" />
+        </g>
+      </g>
+      <g transform="translate(200 150) scale(0.9)">
+        <use href="#strawberry" />
+      </g>
+      <g transform="translate(80 200) scale(1.1)">
+        <use href="#strawberry" />
+      </g>
+    </pattern>
+    <path id="strawberry" d="M78 0 C54 -7 19 38 30 85 C35 112 71 145 78 162 C85 145 121 112 126 85 C137 38 102 -7 78 0 Z" />
+  </defs>
+  <rect width="1200" height="800" fill="url(#strawberryPattern)" />
+</svg>
