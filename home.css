@@ -28,6 +28,44 @@ body {
   font-family: 'DM Sans', sans-serif;
   line-height: 1.6;
   letter-spacing: -0.01em;
+  cursor: crosshair;
+}
+
+.cursor-stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.cursor-star {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--star-size);
+  height: var(--star-size);
+  border-radius: 50%;
+  display: block;
+  background: radial-gradient(circle, rgba(232, 93, 117, 0.95) 0%, rgba(232, 93, 117, 0.5) 45%, rgba(232, 93, 117, 0) 70%);
+  box-shadow: 0 0 14px rgba(232, 93, 117, 0.35);
+  opacity: 0;
+  animation: starBurst 700ms ease-out forwards;
+  animation-delay: var(--delay);
+}
+
+@keyframes starBurst {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.3) rotate(0deg);
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(1.2) rotate(180deg);
+  }
 }
 
 img {
