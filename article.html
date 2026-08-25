@@ -1,57 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <title>My First A,fffffrticle</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I Wonder What You Would Search About Me</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
   <script src="scripts.js" defer></script>
- 
-  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="shortcut icon" href="favicon.ico" />
 </head>
 
 <body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="topbar-left">25 AUGUST 2026</div>
+      <div class="topbar-right"><a href="#search-area">SEARCH</a></div>
+    </header>
 
-  <header>
-    <a href="index.html" class="header-text">My Website</a>
-  </header>
+    <main class="story">
+      <section class="hero" id="top">
+        <p class="eyebrow">AN ONGOING SEARCH</p>
+        <h1>I WONDER WHAT<br />YOU WOULD SEARCH<br />ABOUT ME.</h1>
+        <p class="lede">Some things are easier to search than to say.</p>
 
-  <main>
+        <div class="search-panel" id="search-area" aria-label="Search panel">
+          <div class="search-shell" role="search">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input id="searchInput" type="search" placeholder="What would you like to know?" aria-label="Search" autocomplete="off" />
+            <button type="button" class="search-button" id="searchButton">Search</button>
+          </div>
 
-    <h1>🍓 My First Sweet Little Article 🍓</h1>
-    <p class="date">3 August 2026</p>
+          <div class="suggestion-inline">
+            <span>Try searching:</span>
+            <div class="chip-row">
+              <button class="chip" data-query="why does she remember tiny details?">why does she remember tiny details?</button>
+              <button class="chip" data-query="why does she photograph everything?">why does she photograph everything?</button>
+              <button class="chip" data-query="who does she miss?">who does she miss?</button>
+              <button class="chip" data-query="why does she need alone time?">why does she need alone time?</button>
+            </div>
+          </div>
 
-    <p>Start writing here. There's nothing stopping you from writing a masterpiece.</p>
+          <div class="suggestion-groups" id="suggestionGroups" aria-label="Suggested searches">
+            <div class="suggestion-group">
+              <h3>01 — THE OBVIOUS</h3>
+              <button class="suggestion" data-query="what does she like?">what does she like?</button>
+              <button class="suggestion" data-query="what does she do when she's happy?">what does she do when she's happy?</button>
+              <button class="suggestion" data-query="why does she take pictures?">why does she take pictures?</button>
+              <button class="suggestion" data-query="what kind of person is she?">what kind of person is she?</button>
+            </div>
 
-    <h2>A heading for the next part</h2>
-    <p>Paragraphs go in p tags. Headings go in h1, h2, h3 — big to small.</p>
+            <div class="suggestion-group">
+              <h3>02 — THE SMALL THINGS</h3>
+              <button class="suggestion" data-query="why does she remember tiny details?">why does she remember tiny details?</button>
+              <button class="suggestion" data-query="why does she keep old pictures?">why does she keep old pictures?</button>
+              <button class="suggestion" data-query="why does she associate songs with people?">why does she associate songs with people?</button>
+              <button class="suggestion" data-query="why does she get attached to places?">why does she get attached to places?</button>
+            </div>
 
-    <!-- A quote, styled in style.css -->
-    <blockquote>
-      Good design is as little design as possible.
-      <br>— Dieter Rams
-    </blockquote>
+            <div class="suggestion-group">
+              <h3>03 — THE PEOPLE</h3>
+              <button class="suggestion" data-query="who does she trust?">who does she trust?</button>
+              <button class="suggestion" data-query="why does friendship matter to her?">why does friendship matter to her?</button>
+              <button class="suggestion" data-query="who does she miss?">who does she miss?</button>
+              <button class="suggestion" data-query="why does she remember people?">why does she remember people?</button>
+            </div>
 
-    <h2>Adding a picture</h2>
-<<<<<<< HEAD
-    <p>Here is a pink flower image:</p>
-    <img src="https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&w=1200&q=80" alt="Pink flower image">
-    <p class="image-caption">Pink flower artwork.</p>
-=======
-    <p>Put an image file in this folder, then use an img tag like this:</p>
-    <img src="tennis.jpg" alt="A tennis court">
-    <p class="image-caption">A caption for the image.</p>
->>>>>>> parent of 9308242 (change the picture into strawberry style image)
+            <div class="suggestion-group faded-group">
+              <h3>04 — THE THINGS SHE NEVER TYPES</h3>
+              <button class="suggestion muted" data-query="why wasn't I enough?">why wasn't I enough?</button>
+              <button class="suggestion muted" data-query="will they come back?">will they come back?</button>
+              <button class="suggestion muted" data-query="does anyone remember me the way I remember them?">does anyone remember me the way I remember them?</button>
+            </div>
 
-    <p><a href="index.html">← Back home</a></p>
+            <div class="suggestion-group">
+              <h3>05 — THE UNSOLVED SEARCH</h3>
+              <button class="suggestion" data-query="who is she?">who is she?</button>
+            </div>
+          </div>
 
-  </main>
+          <div class="search-actions">
+            <button type="button" class="surprise-button" id="surpriseButton">Surprise me</button>
+          </div>
+        </div>
 
-  <footer>
-    <a href="https://github.com">My GitHub</a>
-    <br>
-    Made with <span class="heart">&hearts;</span> by me
-  </footer>
+        <div class="scroll-indicator">Scroll to begin ↓</div>
+      </section>
 
+      <section class="result-section" id="resultSection">
+        <div class="result-card" aria-live="polite">
+          <div class="result-topline">
+            <span>SEARCH QUERY</span>
+            <span id="resultCount">About 8,240 results</span>
+          </div>
+          <h2 id="resultTitle">why does she remember tiny details?</h2>
+          <div id="resultBody"></div>
+          <div class="related-box">
+            <p class="related-label">RELATED SEARCHES</p>
+            <div id="relatedSearches" class="related-searches"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="archive-section">
+        <div class="section-kicker">PEOPLE ALSO SEARCHED</div>
+        <div class="archive-grid">
+          <button class="archive-card" data-query="why does she get attached to places?">why does she get attached to places?</button>
+          <button class="archive-card" data-query="why does she remember voices?">why does she remember voices?</button>
+          <button class="archive-card" data-query="what does she do when nobody is watching?">what does she do when nobody is watching?</button>
+          <button class="archive-card" data-query="what does she wish she could say?">what does she wish she could say?</button>
+          <button class="archive-card" data-query="what would she tell her younger self?">what would she tell her younger self?</button>
+        </div>
+      </section>
+
+      <section class="timeline-section">
+        <div class="section-kicker">SEARCH HISTORY</div>
+        <div class="timeline">
+          <div class="time-row"><span>08:42 PM</span><p>why am I thinking about this again?</p></div>
+          <div class="time-row"><span>09:13 PM</span><p>how to stop overthinking</p></div>
+          <div class="time-row"><span>09:27 PM</span><p>best songs for rainy nights</p></div>
+          <div class="time-row"><span>11:48 PM</span><p>what does it mean when someone stops texting</p></div>
+          <div class="time-row"><span>01:06 AM</span><p>why do memories feel stronger at night</p></div>
+          <div class="time-row"><span>01:31 AM</span><p>should I sleep</p></div>
+          <div class="time-row"><span>01:32 AM</span><p>no</p></div>
+        </div>
+      </section>
+
+      <section class="no-results-block">
+        <h3>NO RESULTS FOUND</h3>
+        <p>There are questions she doesn't know how to search for.</p>
+        <ul class="fade-questions">
+          <li>why did that person matter so much?</li>
+          <li>when did everything change?</li>
+          <li>why am I still thinking about it?</li>
+          <li>what would have happened if I had chosen differently?</li>
+        </ul>
+      </section>
+
+      <section class="self-search-section">
+        <div class="section-kicker">YOUR TURN</div>
+        <h3>You've spent all this time searching for her. Try searching for yourself.</h3>
+        <div class="mini-search" role="search">
+          <input id="selfInput" type="text" placeholder="What would you search about yourself?" aria-label="Search for yourself" />
+          <button id="selfButton" type="button">ENTER</button>
+        </div>
+        <div id="selfResult" class="self-result">Interesting. Maybe you didn't come here to understand her. Maybe you came here because you recognised something.</div>
+      </section>
+
+      <section class="final-section">
+        <div class="final-heading">WHO IS SHE?</div>
+        <div class="zero-results">Search results: 0</div>
+        <p>You can collect the photographs. Read the messages. Know the songs. Remember the places. Learn the things she likes.</p>
+        <p>You can know someone for years and still never completely know them.</p>
+        <p>Because a person isn't a search result. They're a collection of contradictions.</p>
+        <div class="final-line">Maybe I'm still loading.</div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>END OF SEARCH</div>
+      <button type="button" class="reset-button" id="resetButton">START OVER ↻</button>
+      <p>A small digital archive of one person.</p>
+    </footer>
+  </div>
 </body>
 
 </html>

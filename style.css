@@ -122,6 +122,243 @@ blockquote {
 }
 
 
+body {
+  font-family: "Work Sans", sans-serif;
+  background: linear-gradient(180deg, #fffaf7 0%, #fff2f5 100%);
+  color: #2f1b24;
+}
+
+h1, h2, h3 {
+  font-family: "Georgia", "Times New Roman", serif;
+  color: #ab355e;
+}
+
+.search-panel {
+  margin: 24px 0 30px;
+  padding: 18px 18px 14px;
+  background: rgba(255, 251, 252, 0.96);
+  border: 2px solid #f4c7d3;
+  border-radius: 20px;
+  box-shadow: 0 18px 40px rgba(112, 40, 65, 0.08);
+}
+
+.search-label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8c435d;
+  font-weight: 700;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid #f1bfd2;
+  border-radius: 999px;
+  padding: 10px 12px 10px 14px;
+  box-shadow: 0 10px 18px rgba(177, 101, 125, 0.08);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.search-box:focus-within {
+  border-color: #de5c8f;
+  box-shadow: 0 14px 26px rgba(174, 73, 109, 0.12);
+  transform: translateY(-1px);
+}
+
+.search-icon {
+  font-size: 1.2rem;
+  opacity: 0.8;
+  color: #b73d6c;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: #3a1d2a;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-box input::placeholder {
+  color: #bd8a9e;
+}
+
+.search-button {
+  border: none;
+  background: linear-gradient(135deg, #ea5d8d, #d64475);
+  color: #fff;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
+
+.suggestions-panel {
+  display: none;
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid #f2d0db;
+}
+
+.search-panel.is-open .suggestions-panel {
+  display: block;
+  animation: fadeInUp 0.22s ease;
+}
+
+.suggestion-group {
+  margin-bottom: 14px;
+}
+
+.suggestion-group h3 {
+  margin: 0 0 8px;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9f4d68;
+  font-family: "Work Sans", sans-serif;
+}
+
+.suggestion-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.suggestion {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #f1bfd2;
+  background: rgba(255, 255, 255, 0.86);
+  color: #713a52;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.suggestion:hover {
+  background: #fff1f6;
+  border-color: #e67da2;
+  transform: translateY(-1px);
+}
+
+.suggestion.muted {
+  opacity: 0.7;
+  color: #865266;
+}
+
+.faded-group {
+  opacity: 0.82;
+}
+
+.search-result {
+  margin-top: 18px;
+  padding: 16px 18px;
+  background: #fff;
+  border: 1px solid #f2d1dd;
+  border-radius: 16px;
+  color: #4d2b35;
+  line-height: 1.7;
+  min-height: 120px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-result.is-active {
+  border-color: #de5c8f;
+  box-shadow: 0 10px 20px rgba(182, 88, 117, 0.08);
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8d5369;
+}
+
+.result-label {
+  font-weight: 700;
+}
+
+.result-count {
+  opacity: 0.9;
+}
+
+.result-question {
+  margin: 0 0 10px;
+  font-size: clamp(1.6rem, 2vw, 2.1rem);
+  color: #432230;
+}
+
+.result-body {
+  color: #4d2b35;
+}
+
+.result-body p {
+  margin: 0 0 10px;
+}
+
+.result-body strong {
+  color: #a3325d;
+}
+
+.related-section {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid #f4d9e3;
+}
+
+.related-section p {
+  margin: 0 0 10px;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #946078;
+  font-weight: 700;
+}
+
+.related-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.related-link {
+  border: 1px solid #f2bfd0;
+  border-radius: 999px;
+  background: #fff7f9;
+  color: #7a4158;
+  padding: 7px 11px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* The footer at the bottom */
 
 footer {
