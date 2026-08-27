@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,159 +11,374 @@
   <script src="scripts.js" defer></script>
   <link rel="shortcut icon" href="favicon.ico" />
 </head>
-
 <body>
-  <div class="page-shell">
-    <header class="topbar">
-      <div class="topbar-left">25 AUGUST 2026</div>
-      <div class="topbar-right"><a href="#search-area">SEARCH</a></div>
+  <div class="nidharna-page">
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Nidharna Search">
+        <span class="brand-icon">🍓</span>
+        <span class="brand-word">nidharna.search</span>
+      </a>
+
+      <nav class="header-nav">
+        <a href="#search-area">Search</a>
+        <a href="#archive">Archive</a>
+        <button class="sound-button" id="soundToggle" type="button" aria-pressed="false">
+          <span class="sound-icon">🔇</span>
+          <span class="sound-text">sound off</span>
+        </button>
+      </nav>
     </header>
 
-    <main class="story">
-      <section class="hero" id="top">
-        <p class="eyebrow">AN ONGOING SEARCH</p>
-        <h1>I WONDER WHAT<br />YOU WOULD SEARCH<br />ABOUT ME.</h1>
-        <p class="lede">Some things are easier to search than to say.</p>
+    <main class="nidharna-story">
+      <section class="intro-screen" id="top">
+        <div class="intro-grid">
+          <div class="intro-copy">
+            <div class="intro-kicker">AN ONGOING SEARCH</div>
+            <h1>I WONDER WHAT<br />YOU WOULD SEARCH<br />ABOUT ME.</h1>
+            <p class="intro-lede">You probably know my name.<br />But names don't tell you very much.</p>
 
-        <div class="search-panel" id="search-area" aria-label="Search panel">
-          <div class="search-shell" role="search">
-            <span class="search-icon" aria-hidden="true">⌕</span>
-            <input id="searchInput" type="search" placeholder="What would you like to know?" aria-label="Search" autocomplete="off" />
-            <button type="button" class="search-button" id="searchButton">Search</button>
-          </div>
+            <div class="search-panel" id="search-area">
+              <div class="search-shell" role="search">
+                <span class="search-icon" aria-hidden="true">⌕</span>
+                <input id="searchInput" type="search" placeholder="Try asking something about me..." autocomplete="off" aria-label="Ask about Nidharnarani" />
+                <button type="button" class="search-button" id="searchButton">Search</button>
+              </div>
 
-          <div class="suggestion-inline">
-            <span>Try searching:</span>
-            <div class="chip-row">
-              <button class="chip" data-query="why does she remember tiny details?">why does she remember tiny details?</button>
-              <button class="chip" data-query="why does she photograph everything?">why does she photograph everything?</button>
-              <button class="chip" data-query="who does she miss?">who does she miss?</button>
-              <button class="chip" data-query="why does she need alone time?">why does she need alone time?</button>
+              <div class="search-subline">
+                <span class="press-enter">press enter to begin</span>
+                <span class="or-line">or</span>
+                <span class="start-explore">start exploring ↓</span>
+              </div>
+
+              <div class="suggestion-inline">
+                <span class="inline-label">search suggestions</span>
+                <div class="chip-row">
+                  <button class="chip" data-query="why does she remember tiny details?">🔍 why does she remember tiny details?</button>
+                  <button class="chip" data-query="why does she take pictures of everything?">🔍 why does she take pictures of everything?</button>
+                  <button class="chip" data-query="why does she disappear when she's overwhelmed?">🔍 why does she disappear when she's overwhelmed?</button>
+                  <button class="chip" data-query="why does she get attached to places?">🔍 why does she get attached to places?</button>
+                  <button class="chip" data-query="why does one song remind her of someone?">🔍 why does one song remind her of someone?</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="intro-particles" aria-hidden="true">
+              <span class="particle p1">✦</span>
+              <span class="particle p2">✧</span>
+              <span class="particle p3">✦</span>
+              <span class="particle p4">✧</span>
             </div>
           </div>
 
-          <div class="suggestion-groups" id="suggestionGroups" aria-label="Suggested searches">
-            <div class="suggestion-group">
-              <h3>01 — THE OBVIOUS</h3>
-              <button class="suggestion" data-query="what does she like?">what does she like?</button>
-              <button class="suggestion" data-query="what does she do when she's happy?">what does she do when she's happy?</button>
-              <button class="suggestion" data-query="why does she take pictures?">why does she take pictures?</button>
-              <button class="suggestion" data-query="what kind of person is she?">what kind of person is she?</button>
+          <aside class="intro-aside">
+            <div class="mini-frame">
+              <div class="mini-frame-top">
+                <span class="mini-label">NIDHARNA.WORLD</span>
+                <span class="mini-dot"></span>
+              </div>
+              <div class="mini-frame-body">
+                <span class="mini-number">08 / 15</span>
+                <span class="mini-divider"></span>
+                <div class="mini-nodes">
+                  <span class="mini-node active"></span>
+                  <span class="mini-node active"></span>
+                  <span class="mini-node active"></span>
+                  <span class="mini-node"></span>
+                  <span class="mini-node"></span>
+                  <span class="mini-node"></span>
+                  <span class="mini-node"></span>
+                  <span class="mini-node"></span>
+                </div>
+                <div class="mini-memo">
+                  <span class="mini-line">memory archive</span>
+                  <span class="mini-line">soft rooms</span>
+                  <span class="mini-line">quiet questions</span>
+                </div>
+              </div>
             </div>
-
-            <div class="suggestion-group">
-              <h3>02 — THE SMALL THINGS</h3>
-              <button class="suggestion" data-query="why does she remember tiny details?">why does she remember tiny details?</button>
-              <button class="suggestion" data-query="why does she keep old pictures?">why does she keep old pictures?</button>
-              <button class="suggestion" data-query="why does she associate songs with people?">why does she associate songs with people?</button>
-              <button class="suggestion" data-query="why does she get attached to places?">why does she get attached to places?</button>
-            </div>
-
-            <div class="suggestion-group">
-              <h3>03 — THE PEOPLE</h3>
-              <button class="suggestion" data-query="who does she trust?">who does she trust?</button>
-              <button class="suggestion" data-query="why does friendship matter to her?">why does friendship matter to her?</button>
-              <button class="suggestion" data-query="who does she miss?">who does she miss?</button>
-              <button class="suggestion" data-query="why does she remember people?">why does she remember people?</button>
-            </div>
-
-            <div class="suggestion-group faded-group">
-              <h3>04 — THE THINGS SHE NEVER TYPES</h3>
-              <button class="suggestion muted" data-query="why wasn't I enough?">why wasn't I enough?</button>
-              <button class="suggestion muted" data-query="will they come back?">will they come back?</button>
-              <button class="suggestion muted" data-query="does anyone remember me the way I remember them?">does anyone remember me the way I remember them?</button>
-            </div>
-
-            <div class="suggestion-group">
-              <h3>05 — THE UNSOLVED SEARCH</h3>
-              <button class="suggestion" data-query="who is she?">who is she?</button>
-            </div>
-          </div>
-
-          <div class="search-actions">
-            <button type="button" class="surprise-button" id="surpriseButton">Surprise me</button>
-          </div>
+          </aside>
         </div>
-
-        <div class="scroll-indicator">Scroll to begin ↓</div>
       </section>
 
       <section class="result-section" id="resultSection">
         <div class="result-card" aria-live="polite">
           <div class="result-topline">
-            <span>SEARCH QUERY</span>
-            <span id="resultCount">About 8,240 results</span>
+            <span class="topline-label">SEARCH RESULT FOUND</span>
+            <span class="result-count" id="resultCount">8 / 15 searches</span>
           </div>
           <h2 id="resultTitle">why does she remember tiny details?</h2>
-          <div id="resultBody"></div>
+          <div class="result-body" id="resultBody">
+            <p>I learn from tiny details: the exact way someone says hello, the songs in a room, the weather before a conversation begins.</p>
+          </div>
           <div class="related-box">
-            <p class="related-label">RELATED SEARCHES</p>
+            <p class="related-label">related searches</p>
             <div id="relatedSearches" class="related-searches"></div>
           </div>
         </div>
       </section>
 
-      <section class="archive-section">
+      <section class="archive-section" id="archive">
         <div class="section-kicker">PEOPLE ALSO SEARCHED</div>
         <div class="archive-grid">
+          <button class="archive-card" data-query="why does she remember tiny details?">why does she remember tiny details?</button>
+          <button class="archive-card" data-query="why does she take pictures of everything?">why does she take pictures of everything?</button>
+          <button class="archive-card" data-query="why does she disappear when she's overwhelmed?">why does she disappear when she's overwhelmed?</button>
           <button class="archive-card" data-query="why does she get attached to places?">why does she get attached to places?</button>
-          <button class="archive-card" data-query="why does she remember voices?">why does she remember voices?</button>
-          <button class="archive-card" data-query="what does she do when nobody is watching?">what does she do when nobody is watching?</button>
-          <button class="archive-card" data-query="what does she wish she could say?">what does she wish she could say?</button>
-          <button class="archive-card" data-query="what would she tell her younger self?">what would she tell her younger self?</button>
+          <button class="archive-card" data-query="why does one song remind her of someone?">why does one song remind her of someone?</button>
+          <button class="archive-card" data-query="why does she overthink everything?">why does she overthink everything?</button>
+          <button class="archive-card" data-query="why does she notice things other people don't?">why does she notice things other people don't?</button>
+          <button class="archive-card" data-query="why does she want to design things?">why does she want to design things?</button>
+          <button class="archive-card" data-query="why does she take so long to make decisions?">why does she take so long to make decisions?</button>
+          <button class="archive-card" data-query="why does she love starting new ideas?">why does she love starting new ideas?</button>
+          <button class="archive-card" data-query="why does she sometimes need to be alone?">why does she sometimes need to be alone?</button>
+          <button class="archive-card" data-query="why does she care so much about memories?">why does she care so much about memories?</button>
+          <button class="archive-card" data-query="why is she always curious?">why is she always curious?</button>
+          <button class="archive-card" data-query="what is she still figuring out?">what is she still figuring out?</button>
+          <button class="archive-card final-card" data-query="who is she, really?">who is she, really?</button>
         </div>
       </section>
 
-      <section class="timeline-section">
-        <div class="section-kicker">SEARCH HISTORY</div>
-        <div class="timeline">
-          <div class="time-row"><span>08:42 PM</span><p>why am I thinking about this again?</p></div>
-          <div class="time-row"><span>09:13 PM</span><p>how to stop overthinking</p></div>
-          <div class="time-row"><span>09:27 PM</span><p>best songs for rainy nights</p></div>
-          <div class="time-row"><span>11:48 PM</span><p>what does it mean when someone stops texting</p></div>
-          <div class="time-row"><span>01:06 AM</span><p>why do memories feel stronger at night</p></div>
-          <div class="time-row"><span>01:31 AM</span><p>should I sleep</p></div>
-          <div class="time-row"><span>01:32 AM</span><p>no</p></div>
+      <section class="article-essay">
+        <div class="essay-header">
+          <span class="essay-kicker">THE ARCHIVE</span>
+          <h2>I WONDER WHAT YOU WOULD SEARCH ABOUT ME</h2>
+        </div>
+
+        <div class="essay-panel">
+          <article class="essay-question" id="q1">
+            <span class="question-number">01</span>
+            <h3>🔍 why does she remember tiny details?</h3>
+            <p>I don't always remember the big things perfectly. But I remember small things. The way someone takes their coffee. A random sentence they said months ago. A song that was playing somewhere. The weather on a particular day.</p>
+            <p>Maybe small details feel more honest. Big moments announce themselves. Everyone knows they are important. But the little things quietly become memories before you even realise you're making them.</p>
+            <div class="memory-fragments">
+              <span class="memory-fragment" data-memory="☕ how someone takes their coffee">☕ how someone takes their coffee</span>
+              <span class="memory-fragment" data-memory="🎵 a song playing somewhere">🎵 a song playing somewhere</span>
+              <span class="memory-fragment" data-memory="🌧️ the weather on a particular day">🌧️ the weather on a particular day</span>
+              <span class="memory-fragment" data-memory="💬 a sentence someone said months ago">💬 a sentence someone said months ago</span>
+            </div>
+          </article>
+
+          <article class="essay-question" id="q2">
+            <span class="question-number">02</span>
+            <h3>🔍 why does she take pictures of everything?</h3>
+            <p>Because sometimes I know I'll forget. Not completely. I'll remember that something happened, but maybe not the colour of the sky. Or the way the place looked. Or how everyone was sitting around the table.</p>
+            <p>A photograph doesn't just keep a moment. It keeps evidence that I was there. That for one second, on one ordinary day, something felt worth remembering.</p>
+            <div class="photo-archive">
+              <div class="photo-card">
+                <span class="photo-frame"></span>
+                <span class="photo-note">memory-01.jpg</span>
+              </div>
+              <div class="photo-card">
+                <span class="photo-frame alt"></span>
+                <span class="photo-note">memory-02.jpg</span>
+              </div>
+              <div class="photo-card">
+                <span class="photo-frame small"></span>
+                <span class="photo-note">memory-03.jpg</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="essay-question" id="q3">
+            <span class="question-number">03</span>
+            <h3>🔍 why does she disappear when she's overwhelmed?</h3>
+            <p>I think I become quiet when there is too much happening inside my head. It's not always because I don't want to talk. Sometimes I just don't know where to begin.</p>
+            <p>So I disappear for a little while. I organise my thoughts. I become quiet. I come back when everything inside feels slightly less loud. I'm still learning that I don't always have to disappear to find peace.</p>
+            <button class="pause-button">pause for a second</button>
+            <div class="pause-message">Sometimes that's all I need too.</div>
+          </article>
+
+          <article class="essay-question" id="q4">
+            <span class="question-number">04</span>
+            <h3>🔍 why does she get attached to places?</h3>
+            <p>Because places remember things differently than people do. A café can remind me of a conversation. A road can remind me of a version of myself. A room can hold an entire period of my life without saying anything about it.</p>
+            <p>Sometimes I go back to a place and realise nothing has changed. Except me. Maybe that's why I get attached to places. They become little containers for memories I don't know where else to keep.</p>
+            <div class="place-cards">
+              <div class="place-card">
+                <span class="place-label">A CAFÉ</span>
+                <span class="place-text">A conversation happened here.</span>
+              </div>
+              <div class="place-card">
+                <span class="place-label">A ROAD</span>
+                <span class="place-text">I used to be a different person here.</span>
+              </div>
+              <div class="place-card">
+                <span class="place-label">A ROOM</span>
+                <span class="place-text">This held an entire chapter of my life.</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="essay-question" id="q5">
+            <span class="question-number">05</span>
+            <h3>🔍 why does one song remind her of someone?</h3>
+            <p>I don't think songs remember people. I think we leave people inside songs. One day, a particular song is just a song. Then someone enters your life. And suddenly, every time it plays, they're there.</p>
+            <p>Years can pass. The person can change. You can change. But somehow, the first few seconds of that song still know exactly where to find the memory.</p>
+            <div class="music-player">
+              <span class="music-label">NOW PLAYING</span>
+              <span class="music-title">A song that used to mean nothing.</span>
+              <div class="music-bars">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <div class="music-progress">
+                <span class="music-start">00:00</span>
+                <span class="music-line"><span class="music-fill"></span></span>
+                <span class="music-end">03:42</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="essay-question" id="q6">
+            <span class="question-number">06</span>
+            <h3>🔍 why does she overthink everything?</h3>
+            <p>I wish I could say I don't. But I think my brain likes to explore every possible version of a situation. What did they mean? What if I said this instead? Did I misunderstand? What happens next?</p>
+            <p>Sometimes overthinking is exhausting. But I think curiosity and overthinking occasionally live very close to each other. I'm just still learning when to ask another question—and when to let one go.</p>
+            <div class="thought-clouds">
+              <span class="thought-dot">What did they mean?</span>
+              <span class="thought-dot">But what if...?</span>
+              <span class="thought-dot">Did I misunderstand?</span>
+              <span class="thought-dot">What happens next?</span>
+            </div>
+            <button class="close-tabs">close unnecessary tabs</button>
+            <div class="tab-message">Better. Not completely better. But better.</div>
+          </article>
+
+          <article class="essay-question" id="q7">
+            <span class="question-number">07</span>
+            <h3>🔍 why does she notice things other people don't?</h3>
+            <p>Maybe because I spend a lot of time looking. Not necessarily for something important. Just looking. The way people interact with things. The awkwardness in an interface. A strange signboard. A tiny inconvenience everyone has learned to tolerate.</p>
+            <p>I think that's probably where designing starts for me. With noticing.</p>
+            <div class="observation-area">
+              <div class="observation-card">
+                <span class="magnify">⌕</span>
+                <span class="observation-note">This button is difficult to find.</span>
+                <span class="observation-note">Why is this sign here?</span>
+                <span class="observation-note">Everyone walks around this problem instead of fixing it.</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="essay-question" id="q8">
+            <span class="question-number">08</span>
+            <h3>🔍 why does she want to design things?</h3>
+            <p>Because I like the moment when confusion starts becoming clear. When something complicated slowly turns into: Oh. This makes sense now.</p>
+            <p>I like asking why something isn't working. I like imagining what could work instead. And honestly? I like the strange process of turning a thought in my head into something another person can actually use.</p>
+            <div class="design-flow">
+              <span class="flow-step">CONFUSION</span>
+              <span class="flow-arrow">↓</span>
+              <span class="flow-step">QUESTION</span>
+              <span class="flow-arrow">↓</span>
+              <span class="flow-step">IDEA</span>
+              <span class="flow-arrow">↓</span>
+              <span class="flow-step">PROTOTYPE</span>
+              <span class="flow-arrow">↓</span>
+              <span class="flow-step main-flow">OH.<br />THIS MAKES SENSE NOW.</span>
+            </div>
+          </article>
+
+          <article class="essay-question" id="q9">
+            <span class="question-number">09</span>
+            <h3>🔍 why does she take so long to make decisions?</h3>
+            <p>Because apparently every decision needs a full internal committee meeting. One version of me says yes. Another version says, “But what if...?” A third version has opened seventeen tabs to research the situation. Eventually, I decide. Usually.</p>
+            <div class="decision-panel">
+              <div class="decision-card">VERSION 01<br />YES.</div>
+              <div class="decision-card">VERSION 02<br />BUT WHAT IF...?</div>
+              <div class="decision-card">VERSION 03<br />LET'S RESEARCH THIS FOR THREE HOURS.</div>
+              <button class="decision-button">MAKE THE DECISION</button>
+            </div>
+            <div class="decision-message">Eventually, I decide. Usually.</div>
+          </article>
+
+          <article class="essay-question" id="q10">
+            <span class="question-number">10</span>
+            <h3>🔍 why does she love starting new ideas?</h3>
+            <p>Because the beginning of an idea is full of possibilities. At the beginning, nothing is wrong yet. The idea could become anything. A website. An app. A story. A design. Something completely unnecessary but interesting. The middle is usually messier. But I still keep coming back to beginnings.</p>
+            <div class="idea-drawer">
+              <div class="idea-card" data-idea="AN APP IDEA">AN APP IDEA</div>
+              <div class="idea-card" data-idea="A WEBSITE IDEA">A WEBSITE IDEA</div>
+              <div class="idea-card" data-idea="A STORY IDEA">A STORY IDEA</div>
+              <div class="idea-card" data-idea="SOMETHING I DON'T KNOW WHAT TO CALL YET">SOMETHING I DON'T KNOW WHAT TO CALL YET</div>
+            </div>
+          </article>
+
+          <article class="essay-question" id="q11">
+            <span class="question-number">11</span>
+            <h3>🔍 why does she sometimes need to be alone?</h3>
+            <p>Because I genuinely enjoy my own company. I like conversations, people and connection. But I also need quiet. A little space where no one needs anything from me. Where I can think without explaining what I'm thinking.</p>
+            <p>Being alone doesn't always mean being lonely. Sometimes it just means returning to yourself.</p>
+            <div class="quiet-toggle">
+              <span class="quiet-label">PEOPLE AROUND ME</span>
+              <button class="quiet-button" id="quietToggle">●</button>
+            </div>
+          </article>
+
+          <article class="essay-question" id="q12">
+            <span class="question-number">12</span>
+            <h3>🔍 why does she care so much about memories?</h3>
+            <p>Because memories are strange. You never know which moment is becoming important while you're living it. The most ordinary day can become something you wish you could visit again. That's probably why I take photographs. Why I get attached to places. Why songs mean more than they should. Maybe I'm just afraid of losing the small things.</p>
+            <div class="timeline-memory">
+              <span class="timeline-node">AN ORDINARY DAY</span>
+              <span class="timeline-arrow">↓</span>
+              <span class="timeline-node">A SMALL MOMENT</span>
+              <span class="timeline-arrow">↓</span>
+              <span class="timeline-node">TIME PASSES</span>
+              <span class="timeline-arrow">↓</span>
+              <span class="timeline-node">SOMEONE MENTIONS IT</span>
+              <span class="timeline-arrow">↓</span>
+              <span class="timeline-node">SUDDENLY, YOU MISS IT</span>
+            </div>
+          </article>
+
+          <article class="essay-question" id="q13">
+            <span class="question-number">13</span>
+            <h3>🔍 why is she always curious?</h3>
+            <p>I don't know. But I think “I wonder…” has probably started more of my thoughts than any other sentence. I wonder why people do that. I wonder how this works. I wonder what would happen if this changed. I wonder if there's another way.</p>
+            <p>Curiosity has taken me into rabbit holes I absolutely did not need to enter. But it has also led me to some of my favourite ideas. So I think I'll keep wondering.</p>
+            <div class="rabbit-hole">
+              <button class="wonder-button" id="wonderButton">I WONDER...</button>
+              <span class="wonder-text" id="wonderText">I WONDER WHY...</span>
+            </div>
+          </article>
+
+          <article class="essay-question" id="q14">
+            <span class="question-number">14</span>
+            <h3>🔍 what is she still figuring out?</h3>
+            <p>A lot, actually. How to stop overthinking. How to trust my own decisions. How to let go of things that have already happened. How to become better without constantly feeling like I'm behind. How to enjoy the process instead of worrying about where I'm going.</p>
+            <p>But maybe nobody completely figures themselves out. Maybe we just become slightly better at asking the right questions.</p>
+            <div class="checklist">
+              <span class="check-row"><span class="check-box">□</span> trusting my own decisions</span>
+              <span class="check-row"><span class="check-box">□</span> letting go</span>
+              <span class="check-row"><span class="check-box">□</span> not overthinking everything</span>
+              <span class="check-row"><span class="check-box">□</span> enjoying the process</span>
+              <span class="check-row"><span class="check-box">□</span> remembering that I'm not behind</span>
+            </div>
+          </article>
+
+          <article class="essay-question final-question" id="q15">
+            <span class="question-number">15</span>
+            <h3>🔍 who is she, really?</h3>
+            <p>Honestly? I don't think I have a final answer yet. I'm still becoming. Still changing my mind. Still collecting memories. Still asking questions. Still getting attached to songs, places and little moments. Still noticing things.</p>
+            <p>Maybe that's the most honest answer I can give you.</p>
+            <div class="final-answer">
+              <h2>I'm Nidharnarani.</h2>
+              <h2>And I'm still figuring out who that is.</h2>
+              <span class="cursor-type">search again someday?</span>
+            </div>
+          </article>
         </div>
       </section>
 
-      <section class="no-results-block">
-        <h3>NO RESULTS FOUND</h3>
-        <p>There are questions she doesn't know how to search for.</p>
-        <ul class="fade-questions">
-          <li>why did that person matter so much?</li>
-          <li>when did everything change?</li>
-          <li>why am I still thinking about it?</li>
-          <li>what would have happened if I had chosen differently?</li>
-        </ul>
-      </section>
-
-      <section class="self-search-section">
-        <div class="section-kicker">YOUR TURN</div>
-        <h3>You've spent all this time searching for her. Try searching for yourself.</h3>
-        <div class="mini-search" role="search">
-          <input id="selfInput" type="text" placeholder="What would you search about yourself?" aria-label="Search for yourself" />
-          <button id="selfButton" type="button">ENTER</button>
+      <section class="ending-section">
+        <div class="ending-box">
+          <div class="ending-label">Thanks for searching.</div>
+          <p>You probably know me a little better now.</p>
+          <div class="ending-links">
+            <a class="back-link" href="#top">← SEARCH AGAIN</a>
+            <a class="home-link" href="index.html">RETURN HOME →</a>
+          </div>
         </div>
-        <div id="selfResult" class="self-result">Interesting. Maybe you didn't come here to understand her. Maybe you came here because you recognised something.</div>
-      </section>
-
-      <section class="final-section">
-        <div class="final-heading">WHO IS SHE?</div>
-        <div class="zero-results">Search results: 0</div>
-        <p>You can collect the photographs. Read the messages. Know the songs. Remember the places. Learn the things she likes.</p>
-        <p>You can know someone for years and still never completely know them.</p>
-        <p>Because a person isn't a search result. They're a collection of contradictions.</p>
-        <div class="final-line">Maybe I'm still loading.</div>
       </section>
     </main>
-
-    <footer class="site-footer">
-      <div>END OF SEARCH</div>
-      <button type="button" class="reset-button" id="resetButton">START OVER ↻</button>
-      <p>A small digital archive of one person.</p>
-    </footer>
   </div>
 </body>
-
 </html>
