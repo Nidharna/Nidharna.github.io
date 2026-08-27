@@ -1378,3 +1378,152 @@ body::after {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* Audio and animation polish for article experience */
+
+@keyframes strawberryFloat {
+  0%, 100% { transform: translateY(0); opacity: 0.86; }
+  50% { transform: translateY(-8px); opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  50% { box-shadow: 0 0 0 4px var(--soft-blush), 0 0 0 8px rgba(232, 93, 117, 0.08); }
+}
+
+.intro-copy h1 {
+  animation: fadeUp 900ms ease both;
+}
+
+.intro-lede {
+  animation: fadeUp 1100ms ease both 230ms;
+}
+
+.search-panel {
+  animation: fadeUp 870ms ease both 260ms;
+}
+
+.search-shell {
+  animation: fadeUp 700ms ease both 400ms;
+}
+
+.search-panel::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 2px;
+  background: var(--strawberry);
+  right: 24px;
+  top: 82px;
+  animation: blinkCursor 900ms steps(2, end) infinite;
+}
+
+@keyframes blinkCursor {
+  50% { opacity: 0.2; }
+}
+
+.particle {
+  animation: strawberryFloat 3s ease-in-out infinite;
+}
+
+.result-card {
+  animation: fadeUp 600ms ease both;
+}
+
+.result-card.is-active {
+  box-shadow: 0 22px 56px var(--shadow);
+}
+
+.result-body p {
+  animation: fadeUp 500ms ease both;
+}
+
+.archive-card,
+.archive-grid button,
+.chip,
+.related-searches button,
+.memory-fragment,
+.idea-card,
+.decision-card,
+.place-card,
+photo-card {
+  transition: transform 320ms ease, background 320ms ease, color 320ms ease, box-shadow 320ms ease;
+}
+
+.archive-card:hover,
+.idea-card:hover,
+.memory-fragment:hover,
+.place-card:hover {
+  transform: translateY(-4px);
+}
+
+.memory-fragment.is-open {
+  background: var(--deep-berry);
+  color: var(--white);
+  transform: scale(1.1);
+}
+
+.fragment-note {
+  animation: fadeUp 320ms ease both;
+}
+
+.photo-card {
+  cursor: pointer;
+}
+
+.photo-card:hover .photo-frame {
+  transform: scale(1.04);
+}
+
+.photo-card.photo-remembered {
+  animation: pulseGlow 700ms ease;
+}
+
+.music-player {
+  animation: fadeUp 520ms ease both;
+}
+
+.music-bars span {
+  animation: bounceBar 900ms ease-in-out infinite;
+}
+
+.music-bars span:nth-child(2){ animation-delay: 120ms; }
+.music-bars span:nth-child(3){ animation-delay: 210ms; }
+.music-bars span:nth-child(4){ animation-delay: 300ms; }
+.music-bars span:nth-child(5){ animation-delay: 420ms; }
+.music-bars span:nth-child(6){ animation-delay: 510ms; }
+
+@keyframes bounceBar {
+  50% { height: 40px; opacity: 0.8; }
+}
+
+.place-card {
+  cursor: pointer;
+}
+
+.place-card.open {
+  background: var(--deep-berry);
+  color: var(--white);
+}
+
+.question-stack,
+.article-essay,
+.final-search-section {
+  animation: fadeUp 700ms ease both;
+}
+
+.suggestion-inline .chip-row {
+  align-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
