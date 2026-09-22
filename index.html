@@ -452,6 +452,36 @@
     </main>
 
     <footer class="site-footer">
+      <div class="site-shell weather-story" id="weatherFooter" aria-live="polite">
+        <div class="weather-story__frame">
+          <div class="weather-story__terminal-panel">
+            <div class="weather-story__terminal" id="storyTerminal" aria-live="polite"></div>
+            <button class="weather-story__cta" id="storyStartButton" type="button">[ boot sky ]</button>
+          </div>
+
+          <div class="weather-story__scene-panel">
+            <div class="weather-story__scene-header">
+              <span>DELHI / INDIA</span>
+              <span id="weatherStatusChip">status: cold boot</span>
+            </div>
+            <div class="weather-story__scene" id="weatherScene" aria-label="Weather scene"></div>
+            <div class="weather-story__tinyline" id="storyMeta">kernel waiting</div>
+          </div>
+
+          <div class="weather-story__readout-panel">
+            <div class="weather-story__headline" id="weatherHeadline">the sky says</div>
+            <div class="weather-story__condition" id="weatherCondition">--</div>
+            <div class="weather-story__temp" id="weatherTemp">--°C</div>
+            <div class="weather-story__narrative" id="weatherNarrative">something is waking up below the page.</div>
+            <div class="weather-story__meta">
+              <span id="weatherCodeLabel">code --</span>
+              <span id="weatherClock">--:--</span>
+            </div>
+            <button class="weather-story__retry" id="retryButton" type="button" hidden>[ retry ]</button>
+          </div>
+        </div>
+      </div>
+
       <div class="site-shell footer-inner">
         <div class="footer-brand">
           <strong>NIDHARNA RANI</strong>
@@ -466,7 +496,10 @@
         </nav>
       </div>
 
-      <div class="site-shell footer-meta">© 2026 Nidharnarani · Designed, questioned and occasionally overthought by Nidharnarani.</div>
+      <div class="site-shell footer-meta">
+        <span>© 2026 Nidharnarani · Designed, questioned and occasionally overthought by Nidharnarani.</span>
+        <a class="weather-credit" href="https://open-meteo.com/" target="_blank" rel="noreferrer">Weather data by Open-Meteo</a>
+      </div>
     </footer>
   </body>
 </html>
