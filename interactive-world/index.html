@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A playful, interactive digital world by Nidharnarani Rani." />
+  <title>A World of Little Curiosities — Nidharnarani</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="world.css" />
+  <script src="world.js" defer></script>
+</head>
+<body class="world-page">
+  <main class="interactive-world">
+    <section class="world-stage" id="worldStage" aria-labelledby="worldTitle">
+      <header class="world-header">
+        <a class="world-wordmark" href="../index.html">NIDHARNA RANI <span>·</span> PROJECT 01</a>
+        <a class="world-home-link" href="../index.html">BACK TO PORTFOLIO <span aria-hidden="true">↗</span></a>
+      </header>
+
+      <div class="world-art" id="worldArt" aria-label="Interactive floating objects">
+        <div class="globe-column" aria-label="Three illustrated globes">
+          <button class="world-object world-globe globe-one" type="button" data-thought="A small world can hold a lot of stories." aria-label="Explore the first globe">
+            <svg viewBox="0 0 120 120" role="img" aria-label="Pink wireframe globe">
+              <circle cx="60" cy="60" r="49" />
+              <ellipse cx="60" cy="60" rx="24" ry="49" />
+              <ellipse cx="60" cy="60" rx="42" ry="49" />
+              <path d="M13 60h94M19 39h82M19 81h82M29 24h62M29 96h62M60 11v98M39 15c16 27 16 63 0 90M81 15c-16 27-16 63 0 90" />
+              <path class="map-lines" d="m39 34 10-7 8 5-2 8 7 5-7 7-9-2-3 9-9-4-2-11 8-10zm25 29 8-4 8 4-3 8 5 5-9 7-10-5-4-8z" />
+              <circle class="map-dot" cx="45" cy="47" r="2.4" /><circle class="map-dot" cx="75" cy="67" r="2.4" />
+            </svg>
+          </button>
+          <button class="world-object world-globe globe-two" type="button" data-thought="Somewhere new to look, even when you stay right here." aria-label="Explore the second globe">
+            <svg viewBox="0 0 120 120" role="img" aria-label="Pink wireframe globe">
+              <circle cx="60" cy="60" r="49" /><ellipse cx="60" cy="60" rx="24" ry="49" /><ellipse cx="60" cy="60" rx="42" ry="49" />
+              <path d="M13 60h94M19 39h82M19 81h82M29 24h62M29 96h62M60 11v98M39 15c16 27 16 63 0 90M81 15c-16 27-16 63 0 90" />
+              <path class="map-lines" d="m35 32 15-4 7 8-5 8 6 8-12 8-9-8-7-10zm31 36 8-8 10 4 1 10-8 9-9-5z" />
+              <circle class="map-dot" cx="47" cy="47" r="2.4" /><circle class="map-dot" cx="78" cy="76" r="2.4" />
+            </svg>
+          </button>
+          <button class="world-object world-globe globe-three" type="button" data-thought="A reminder that there is always another perspective." aria-label="Explore the third globe">
+            <svg viewBox="0 0 120 120" role="img" aria-label="Pink wireframe globe">
+              <circle cx="60" cy="60" r="49" /><ellipse cx="60" cy="60" rx="24" ry="49" /><ellipse cx="60" cy="60" rx="42" ry="49" />
+              <path d="M13 60h94M19 39h82M19 81h82M29 24h62M29 96h62M60 11v98M39 15c16 27 16 63 0 90M81 15c-16 27-16 63 0 90" />
+              <path class="map-lines" d="m42 27 12 4 3 8-7 8 8 10-7 8-12-8-6-13zm23 43 9-8 10 5-1 11-10 7-9-7z" />
+              <circle class="map-dot" cx="51" cy="41" r="2.4" /><circle class="map-dot" cx="78" cy="75" r="2.4" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="orbit orbit-one" aria-hidden="true"></div>
+        <div class="orbit orbit-two" aria-hidden="true"></div>
+        <button class="world-object sparkle sparkle-one" type="button" data-thought="Found you looking closely." aria-label="Reveal a tiny hidden note">✦</button>
+        <span class="sparkle sparkle-two" aria-hidden="true">✦</span>
+        <span class="sparkle sparkle-three" aria-hidden="true">✦</span>
+        <button class="world-object sparkle sparkle-four" type="button" data-thought="A small detail can change the whole picture." aria-label="Reveal another tiny hidden note">✧</button>
+
+        <button class="world-object world-sphere sphere-large" type="button" data-thought="A thought can start as a tiny bright thing." aria-label="Touch the rose-pink sphere"><span></span></button>
+        <button class="world-object world-sphere sphere-small" type="button" data-thought="A little shine, for no particular reason." aria-label="Touch the pearly pink sphere"><span></span></button>
+        <button class="world-object world-sphere sphere-lilac" type="button" data-thought="Somewhere between a cloud and an idea." aria-label="Touch the lavender sphere"><span></span></button>
+        <button class="world-object world-sphere sphere-pearl" type="button" data-thought="A soft place for a passing thought." aria-label="Touch the blush sphere"><span></span></button>
+
+        <button class="world-object world-bubble bubble-one" type="button" data-thought="Keep looking a little closer." aria-label="Floating thought bubble one"></button>
+        <button class="world-object world-bubble bubble-two" type="button" data-thought="What else could this become?" aria-label="Floating thought bubble two"></button>
+        <button class="world-object world-bubble bubble-three" type="button" data-thought="An ordinary detail, noticed." aria-label="Floating thought bubble three"></button>
+        <button class="world-object world-bubble bubble-four" type="button" data-thought="A small idea passing by." aria-label="Floating thought bubble four"></button>
+        <button class="world-object world-bubble bubble-five" type="button" data-draggable data-thought="Maybe there is a story here." aria-label="Draggable thought bubble five"></button>
+        <button class="world-object world-bubble bubble-six" type="button" data-thought="Curiosity looks good on you." aria-label="Floating thought bubble six"></button>
+        <button class="world-object world-bubble bubble-seven" type="button" data-thought="Nothing is too small to wonder about." aria-label="Floating thought bubble seven"></button>
+        <button class="world-object world-bubble bubble-eight" type="button" data-draggable data-thought="Stay for one more question." aria-label="Draggable thought bubble eight"></button>
+
+        <p class="object-note" id="objectNote" role="status" aria-live="polite">Tap an object. It might have a thought.</p>
+
+        <nav class="world-nav" aria-label="Explore the interactive world">
+          <button class="world-pill pill-experiments" type="button" data-open-view="experiments">Little Experiments <span aria-hidden="true">↗</span></button>
+          <a class="world-pill pill-work" href="../index.html#work" target="_blank" rel="noreferrer">Selected Work <span aria-hidden="true">↗</span></a>
+          <button class="world-pill pill-garden" type="button" data-open-view="garden">The Garden <span aria-hidden="true">↗</span></button>
+          <button class="world-pill pill-archive" type="button" data-open-view="archive">Curiosity Archive <span aria-hidden="true">↗</span></button>
+          <a class="world-pill pill-about" href="../index.html#about" target="_blank" rel="noreferrer">About Me <span aria-hidden="true">↗</span></a>
+          <a class="world-pill pill-contact" href="../index.html#contact" target="_blank" rel="noreferrer">Contact <span aria-hidden="true">↗</span></a>
+        </nav>
+
+        <div class="world-title-block">
+          <p class="world-eyebrow">AN INTERACTIVE PLAYGROUND BY NIDHARNA RANI</p>
+          <h1 id="worldTitle"><span class="title-words"><span>A WORLD OF</span> <span>LITTLE</span></span><br class="desktop-title-break" /><span class="title-last">CURIOSITIES.</span></h1>
+          <p class="world-subtitle">Things I notice, things I make, and things worth exploring.</p>
+        </div>
+      </div>
+      <footer class="world-footer"><span>MOVE A LITTLE CLOSER</span><span>DELHI / INDIA · 2026</span></footer>
+    </section>
+
+    <section class="world-view" id="experimentsView" aria-labelledby="experimentsTitle" hidden>
+      <button type="button" class="back-world" data-back-to-world>← Back to my little world</button>
+      <p class="world-eyebrow">A FEW THINGS TO POKE AT</p>
+      <h2 id="experimentsTitle">Little Experiments</h2>
+      <p class="view-intro">A tiny design lab for seeing what happens when you move things around.</p>
+      <div class="experiment-tabs" role="tablist" aria-label="Choose an experiment">
+        <button type="button" id="shapeTab" class="experiment-tab" role="tab" aria-selected="true" aria-controls="shapePanel">Shape Playground</button>
+        <button type="button" id="colourTab" class="experiment-tab" role="tab" aria-selected="false" aria-controls="colourPanel" tabindex="-1">Colour Alchemy</button>
+        <button type="button" id="planeTab" class="experiment-tab" role="tab" aria-selected="false" aria-controls="planePanel" tabindex="-1">Paper Plane</button>
+      </div>
+
+      <section class="experiment-panel" id="shapePanel" role="tabpanel" aria-labelledby="shapeTab">
+        <h3>Shape Playground</h3>
+        <p>Drag a shape around. Pick a new form or colour and see how it feels.</p>
+        <div class="shape-playground" id="shapePlayground" aria-label="Draggable shape area">
+          <button type="button" class="lab-shape shape-one" data-shape-object data-form="round" aria-label="Draggable pink shape one"><span></span></button>
+          <button type="button" class="lab-shape shape-two" data-shape-object data-form="round" aria-label="Draggable pink shape two"><span></span></button>
+          <button type="button" class="lab-shape shape-three" data-shape-object data-form="round" aria-label="Draggable pink shape three"><span></span></button>
+          <span class="shape-hint">grab one and give it a nudge</span>
+        </div>
+        <div class="lab-controls">
+          <div class="control-set" role="group" aria-label="Choose shape">
+            <span class="control-label">FORM</span>
+            <button type="button" class="shape-choice is-selected" data-shape-mode="round" aria-pressed="true">Round</button>
+            <button type="button" class="shape-choice" data-shape-mode="square" aria-pressed="false">Square</button>
+            <button type="button" class="shape-choice" data-shape-mode="star" aria-pressed="false">Star</button>
+          </div>
+          <div class="control-set" role="group" aria-label="Choose shape colour">
+            <span class="control-label">COLOUR</span>
+            <button type="button" class="colour-swatch swatch-rose" data-shape-colour="#e884a6" aria-label="Rose pink" aria-pressed="true"></button>
+            <button type="button" class="colour-swatch swatch-lilac" data-shape-colour="#bca8d7" aria-label="Soft lavender" aria-pressed="false"></button>
+            <button type="button" class="colour-swatch swatch-lemon" data-shape-colour="#efc77d" aria-label="Soft yellow" aria-pressed="false"></button>
+            <button type="button" class="colour-swatch swatch-green" data-shape-colour="#a8b994" aria-label="Sage green" aria-pressed="false"></button>
+          </div>
+          <button type="button" class="lab-reset" id="resetShapes">Reset shapes</button>
+        </div>
+        <p class="lab-status" id="shapeStatus" role="status" aria-live="polite">Everything starts somewhere.</p>
+      </section>
+
+      <section class="experiment-panel" id="colourPanel" role="tabpanel" aria-labelledby="colourTab" hidden>
+        <h3>Colour Alchemy</h3>
+        <p>Choose two colours. What they make together is somewhere in between.</p>
+        <div class="colour-mixer">
+          <label>FIRST COLOUR <input type="color" id="firstColour" value="#e884a6" /></label>
+          <span aria-hidden="true">+</span>
+          <label>SECOND COLOUR <input type="color" id="secondColour" value="#bca8d7" /></label>
+          <span aria-hidden="true">=</span>
+          <div class="mixed-colour" id="mixedColour" aria-label="Mixed colour preview"></div>
+        </div>
+        <p class="colour-result">A little of both: <output id="mixedHex" for="firstColour secondColour">#D2C6C2</output></p>
+      </section>
+
+      <section class="experiment-panel plane-panel" id="planePanel" role="tabpanel" aria-labelledby="planeTab" hidden>
+        <h3>Paper Plane</h3>
+        <p>Pick a direction, then let a small idea take off.</p>
+        <div class="plane-stage" id="planeStage">
+          <span class="plane-cloud cloud-left" aria-hidden="true">☁</span>
+          <span class="plane-cloud cloud-right" aria-hidden="true">☁</span>
+          <svg class="paper-plane" id="paperPlane" viewBox="0 0 72 52" role="img" aria-label="A folded paper plane">
+            <path d="M4 23 67 3 49 49 34 31 4 23Z" />
+            <path d="m34 31 33-28M34 31l4 12 11-11" />
+          </svg>
+          <span class="flight-trail" aria-hidden="true"></span>
+        </div>
+        <button type="button" class="launch-plane" id="launchPlane">Launch the plane <span aria-hidden="true">↗</span></button>
+        <p class="lab-status" id="planeStatus" role="status" aria-live="polite">It can always come around again.</p>
+      </section>
+    </section>
+
+    <section class="world-view garden-view" id="gardenView" aria-labelledby="gardenTitle" hidden>
+      <button type="button" class="back-world" data-back-to-world>← Back to my little world</button>
+      <p class="world-eyebrow">A SMALL PATCH OF POSSIBILITY</p>
+      <h2 id="gardenTitle">The Garden</h2>
+      <p class="view-intro">Tap anywhere on the soil to plant a flower. Or use the button below to plant one where you are.</p>
+      <div class="garden-bed" id="plantingBed" role="group" aria-label="Garden soil. Click or tap anywhere in this area to plant a flower. You can also focus it and press Enter." tabindex="0">
+        <div class="garden-sky" aria-hidden="true"><span>✦</span><span>·</span><span>✧</span></div>
+        <span class="firefly firefly-one" aria-hidden="true"></span>
+        <span class="firefly firefly-two" aria-hidden="true"></span>
+        <span class="firefly firefly-three" aria-hidden="true"></span>
+        <span class="garden-petal petal-one" aria-hidden="true"></span>
+        <span class="garden-petal petal-two" aria-hidden="true"></span>
+        <span class="garden-petal petal-three" aria-hidden="true"></span>
+        <div class="garden-soil" aria-hidden="true"></div>
+      </div>
+      <div class="garden-actions">
+        <p class="garden-message" id="gardenMessage" role="status" aria-live="polite">Nothing has bloomed yet. That’s a perfectly good place to begin.</p>
+        <button type="button" class="garden-action" id="plantFlowerButton">Plant a flower</button>
+        <button type="button" class="garden-action" id="resetGarden">Start again</button>
+      </div>
+    </section>
+
+    <section class="world-view archive-view" id="archiveView" aria-labelledby="archiveTitle" hidden>
+      <button type="button" class="back-world" data-back-to-world>← Back to my little world</button>
+      <p class="world-eyebrow">A FEW QUESTIONS I KEEP AROUND</p>
+      <h2 id="archiveTitle">Curiosity Archive</h2>
+      <p class="view-intro">Not answers, exactly. Just things I like wondering about.</p>
+      <div class="archive-toolbar">
+        <span id="archiveCount">12 small curiosities</span>
+        <button type="button" id="shuffleArchive">Shuffle questions <span aria-hidden="true">⤨</span></button>
+      </div>
+      <div class="archive-list">
+        <button type="button" data-reflection="Some memories arrive with the edges softened. I can remember the feeling before I can remember the day, like waking up with a dream still warm in my hands.">Why do certain memories feel like dreams? <span>↗</span></button>
+        <button type="button" data-reflection="I would give them names that sound like old friends. The long grey one passing over the afternoon could be called Tuesday, even if it is very much a Thursday.">What if clouds had names? <span>↗</span></button>
+        <button type="button" data-reflection="A small kindness can stay longer than the big event around it. Maybe because nobody planned it; it just happened, and someone noticed.">Why do we remember tiny moments? <span>↗</span></button>
+        <button type="button" data-reflection="Maybe a place keeps a little of the shape we left in it: the chair pulled out, the path worn down, the corner where we used to wait. I like thinking it does.">Can a place miss someone? <span>↗</span></button>
+        <button type="button" data-reflection="It is often something I almost missed: a late cup of tea, familiar voices in another room, a bit of sun landing on the floor for no reason.">What makes an ordinary day unforgettable? <span>↗</span></button>
+        <button type="button" data-reflection="A song makes a small room around a memory. One line, and the old light comes back before I have time to decide whether I meant to visit.">Why does a familiar song change the room? <span>↗</span></button>
+        <button type="button" data-reflection="Maybe after we have found a way around it enough times. The workaround settles in, and the original annoyance starts to look like just another part of the day.">When does a tiny inconvenience become a habit? <span>↗</span></button>
+        <button type="button" data-reflection="Maybe when it makes space for you without asking you to learn a secret language first. The small signs matter: where to look, what happens next, how to begin.">How can a button feel like a welcome? <span>↗</span></button>
+        <button type="button" data-reflection="The conversations that stopped halfway, the afternoon light, the version of me who sat there thinking this was only a normal day. Probably all of it.">What might an empty chair remember? <span>↗</span></button>
+        <button type="button" data-reflection="Sometimes they are less about using the thing and more about keeping the person or the day close. A ticket stub can be a very small time machine.">Why do we keep things we do not use? <span>↗</span></button>
+        <button type="button" data-reflection="We might agree on the name of it and still see different shades. I wonder how many tiny differences we carry around without ever needing to settle them.">Can two people notice the same colour differently? <span>↗</span></button>
+        <button type="button" data-reflection="A question that leaves a little room for not knowing. The best ones seem to open a door, then let you choose whether to step through.">What is a good question for? <span>↗</span></button>
+      </div>
+    </section>
+
+    <dialog class="reflection-dialog" id="reflectionDialog" aria-labelledby="reflectionQuestion">
+      <button type="button" class="dialog-close" aria-label="Close reflection">×</button>
+      <p class="world-eyebrow">A THOUGHT, NOT A CONCLUSION</p>
+      <h2 id="reflectionQuestion"></h2>
+      <p id="reflectionText"></p>
+    </dialog>
+  </main>
+</body>
+</html>
