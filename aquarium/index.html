@@ -16,7 +16,7 @@
   <div class="ui">
     <header class="title">
       <h1>An aquarium for things that don&rsquo;t exist</h1>
-      <p>Six creatures that aren&rsquo;t real. Pick an ink, click the water, and move the pointer slowly.</p>
+      <p>Six creatures that aren&rsquo;t real. Pick an ink, click the water, and move the pointer slowly. Turn Sound on for the full effect.</p>
     </header>
 
     <aside class="notes" id="notes">
@@ -35,7 +35,12 @@
         <button class="pot" data-ink="2" role="radio" aria-checked="false" aria-label="Yellow ink"></button>
       </div>
       <label class="grp" for="current"><span class="lab">Current</span><input id="current" type="range" min="0" max="100" value="50"></label>
-      <button class="hush" id="hush" type="button">Hold to hush</button>
+      <div class="grp">
+        <button class="tog" id="sound" type="button" aria-pressed="false"><i class="led"></i>Sound</button>
+        <button class="tog" id="hush" type="button" aria-pressed="false"><i class="led"></i>Hush</button>
+        <button class="tog" id="game" type="button" aria-pressed="false"><i class="led"></i>Feed</button>
+        <span class="hud" id="hud" hidden aria-live="polite"></span>
+      </div>
     </div>
   </div>
 </div>

@@ -21,9 +21,88 @@
   const seen = new Set();
   let J, RB, SP = [], BL, SPORE;
   let currentPhase = 0, weedPhase = 0;
+  const ripples = []; let pour = null, lastRip = 0;
+  const game = { on: false, pearl: null, score: 0, best: 0, grace: 0, dead: 0 };
+  const keys = new Set();
+  function addDrop(x, y, ink, max) {
+    if (drops.length > 40) drops.shift();
+    drops.push({ x, y, ink, age: 0, r: 0, max, seed: Math.random() * 1000, hit: new Set() });
+  }
 
   function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
   const bedY = x => H - 70 * S - 22 * S * Math.sin(x * 0.0045 + 1.3) - 12 * S * Math.sin(x * 0.013 + 0.4) - 7 * S * Math.sin(x * 0.031);
+
+  // ---------- sound and touch ----------
+  const buzz = p => { try { if (navigator.vibrate) navigator.vibrate(p); } catch (_) {} };
+  const Snd = (() => {
+    let ac = null, master = null, lp = null, rOsc = null, rGain = null, enabled = false, hushOn = false;
+    const last = {};
+    const ok = (k, gap) => { const n = performance.now(); if (n - (last[k] || 0) < gap) return false; last[k] = n; return true; };
+    const PENT = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];
+    function ensure() {
+      if (ac) return true;
+      const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return false;
+      try { ac = new AC(); } catch (_) { return false; }
+      master = ac.createGain(); master.gain.value = 0;
+      lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = hushOn ? 450 : 9000; lp.Q.value = 0.5;
+      master.connect(lp); lp.connect(ac.destination);
+      // ambient water: brown noise through a slowly moving filter, plus two low tones
+      const len = ac.sampleRate * 2, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+      let b = 0; for (let i = 0; i < len; i++) { b = (b + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = b * 3.5; }
+      const ns = ac.createBufferSource(); ns.buffer = buf; ns.loop = true;
+      const nf = ac.createBiquadFilter(); nf.type = 'lowpass'; nf.frequency.value = 380;
+      const ng = ac.createGain(); ng.gain.value = 0.16;
+      ns.connect(nf); nf.connect(ng); ng.connect(master); ns.start();
+      const lfo = ac.createOscillator(), lg = ac.createGain(); lfo.frequency.value = 0.07; lg.gain.value = 140; lfo.connect(lg); lg.connect(nf.frequency); lfo.start();
+      [55, 82.5].forEach((f, i) => { const o = ac.createOscillator(), g = ac.createGain(); o.type = 'sine'; o.frequency.value = f * (1 + i * 0.002); g.gain.value = 0.03; o.connect(g); g.connect(master); o.start(); });
+      // the ribbon hums while it follows you
+      rOsc = ac.createOscillator(); rOsc.type = 'sine'; rOsc.frequency.value = 220;
+      rGain = ac.createGain(); rGain.gain.value = 0; rOsc.connect(rGain); rGain.connect(master); rOsc.start();
+      return true;
+    }
+    function tone(f, dur, type, vol, f2, delay) {
+      if (!enabled) return;
+      const t = ac.currentTime + (delay || 0), o = ac.createOscillator(), g = ac.createGain();
+      o.type = type || 'sine'; o.frequency.setValueAtTime(f, t);
+      if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + dur);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + 0.05);
+    }
+    function noise(dur, f, q, vol, type, delay) {
+      if (!enabled) return;
+      const t = ac.currentTime + (delay || 0), n = Math.max(1, (ac.sampleRate * dur) | 0), buf = ac.createBuffer(1, n, ac.sampleRate), d = buf.getChannelData(0);
+      for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+      const s = ac.createBufferSource(); s.buffer = buf;
+      const fl = ac.createBiquadFilter(); fl.type = type || 'bandpass'; fl.frequency.value = f; fl.Q.value = q || 1;
+      const g = ac.createGain(); g.gain.value = vol; s.connect(fl); fl.connect(g); g.connect(master); s.start(t);
+    }
+    return {
+      enable(v) {
+        if (v && !ensure()) return;
+        enabled = v; if (!ac) return;
+        if (ac.state === 'suspended') ac.resume();
+        master.gain.setTargetAtTime(v ? 0.9 : 0, ac.currentTime, 0.2);
+        lp.frequency.setTargetAtTime(hushOn ? 450 : 9000, ac.currentTime, 0.05);
+      },
+      hush(v) { hushOn = v; if (ac) lp.frequency.setTargetAtTime(v ? 450 : 9000, ac.currentTime, 0.3); },
+      bloop(i) { const f = [196, 261.6, 392][i]; tone(f * 2, 0.22, 'sine', 0.2, f); tone(f * 3, 0.12, 'sine', 0.05, f * 1.5, 0.03); },
+      drip(i) { if (!ok('drip', 110)) return; const f = [392, 523, 784][i]; tone(f, 0.09, 'sine', 0.06, f * 0.7); },
+      pop() { noise(0.06, 2400, 1.2, 0.35, 'highpass'); tone(700, 0.09, 'sine', 0.18, 220); },
+      chime() { const a = (Math.random() * 4) | 0; tone(PENT[a], 1.1, 'triangle', 0.1); tone(PENT[a + 2], 1.3, 'triangle', 0.08, 0, 0.13); },
+      tik() { if (!ok('tik', 70)) return; tone(1500 + Math.random() * 900, 0.04, 'sine', 0.05); },
+      thump() { tone(95, 0.45, 'sine', 0.13, 48); },
+      breath(open) { noise(0.5, open ? 900 : 500, 0.8, 0.12, 'bandpass'); },
+      burst() { noise(0.12, 1800, 0.7, 0.3); for (let i = 0; i < 5; i++) tone(PENT[(Math.random() * 6) | 0] * 1.5, 0.5, 'sine', 0.06, 0, 0.04 + i * 0.07); },
+      reform() { tone(200, 0.9, 'sine', 0.07, 420); },
+      eat() { tone(660, 0.12, 'sine', 0.14, 990); tone(990, 0.16, 'triangle', 0.08, 0, 0.07); },
+      crash() { noise(0.3, 500, 0.8, 0.3, 'lowpass'); tone(260, 0.45, 'sawtooth', 0.07, 60); },
+      ribbon(active, y, sp) {
+        if (!enabled || !rGain) return; const t = ac.currentTime;
+        rGain.gain.setTargetAtTime(active ? 0.03 * Math.min(1, sp) : 0, t, 0.15);
+        rOsc.frequency.setTargetAtTime(160 + (1 - y) * 280, t, 0.1);
+      }
+    };
+  })();
 
   // ---------- drawing helpers ----------
   function halftone(c, x, y, w, h, sp, rmax, grad) {
@@ -97,6 +176,58 @@
     grain = ctx.createPattern(g, 'repeat');
   }
 
+  // ---------- ribbon game ----------
+  function resetRibbon(n) {
+    const h = RB.p[0]; RB.p = [];
+    for (let i = 0; i < n; i++) RB.p.push({ x: clamp(h.x - Math.cos(RB.ang) * i * 10 * S, 5, W - 5), y: clamp(h.y - Math.sin(RB.ang) * i * 10 * S, 5, H - 5) });
+  }
+  function setHud(msg) {
+    const el = $('#hud'); el.hidden = !game.on;
+    el.textContent = msg || ('Pearls ' + game.score + ' \u00b7 Best ' + game.best);
+  }
+  function spawnPearl() {
+    const cr = cv.getBoundingClientRect();
+    const rs = [...document.querySelectorAll('.sheet, .tray, .title h1, .title p, .notes-toggle')].map(e => e.getBoundingClientRect());
+    for (let t = 0; t < 40; t++) {
+      const x = W * (0.07 + Math.random() * 0.86), y = lerp(H * 0.1, bedY(x) - 90 * S, Math.random());
+      const X = x + cr.left, Y = y + cr.top;
+      if (rs.some(r => X > r.left - 24 && X < r.right + 24 && Y > r.top - 24 && Y < r.bottom + 24)) continue;
+      if (Math.hypot(x - RB.p[0].x, y - RB.p[0].y) < 90 * S) continue;
+      game.pearl = { x, y }; return;
+    }
+    game.pearl = { x: W * 0.5, y: H * 0.5 };
+  }
+  function setGame(v) {
+    game.on = v; game.dead = 0;
+    if (v) { game.score = 0; resetRibbon(20); game.grace = 1.5; spawnPearl(); }
+    else { game.pearl = null; resetRibbon(34); }
+    setHud();
+  }
+  function gameCheck(h, dt) {
+    const g = game;
+    if (g.pearl && Math.hypot(h.x - g.pearl.x, h.y - g.pearl.y) < 20 * S) {
+      g.score++; g.best = Math.max(g.best, g.score);
+      const tail = RB.p[RB.p.length - 1];
+      if (RB.p.length < 80) for (let k = 0; k < 5; k++) RB.p.push({ x: tail.x, y: tail.y });
+      ripples.push({ x: g.pearl.x, y: g.pearl.y, age: 0 });
+      Snd.eat(); buzz(14); see('snake'); setHud(); spawnPearl();
+    }
+    if (g.grace > 0) { g.grace -= dt; return; }
+    for (let i = 14; i < RB.p.length; i++) {
+      if (Math.hypot(h.x - RB.p[i].x, h.y - RB.p[i].y) < 8 * S) {
+        g.dead = 1.1; g.score = 0; Snd.crash(); buzz([30, 40, 30]); setHud('Tangled. Starting over.'); return;
+      }
+    }
+  }
+  function drawPearl() {
+    const p = game.pearl, r = 12 * S * (1 + 0.12 * Math.sin(T * 4));
+    ctx.strokeStyle = rgba(INK[0], 0.6); ctx.lineWidth = 1.4; ctx.setLineDash([2, 5]);
+    ctx.beginPath(); ctx.arc(p.x, p.y, r * 2.1 + 3 * Math.sin(T * 3), 0, 6.2832); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = rgba(INK[2], 1); ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = rgba(INK[1], 0.9); ctx.beginPath(); ctx.arc(p.x + 1.8, p.y - 1.3, r * 0.6, 0, 6.2832); ctx.fill();
+    eyes.push({ x: p.x - r * 0.3, y: p.y - r * 0.35, r: r * 0.22 });
+  }
+
   // ---------- creatures ----------
   function makeTent(x, y, n, len, w, dx, arm, ph) {
     const pts = []; for (let i = 0; i < n; i++) pts.push({ x: x, y: y + i * len, px: x, py: y + i * len });
@@ -117,6 +248,7 @@
     BL = Object.assign(mk(2), { ax: 0, ay: 0, cx: 0, cy: 0, open: 1, hold: 0, sway: 0 });
     SPORE = Object.assign(mk(1), { x: W * 0.78, y: H * 0.55, r: 22 * S, burst: false, bt: 0, parts: [], p1: p(), p2: p(), p3: p(), p4: p() });
     layout();
+    ptr.lx = W / 2; ptr.ly = H / 2;
     ready = true;
   }
   function layout() {
@@ -130,10 +262,12 @@
   const NOTES = [
     { id: 'jelly', name: 'Noctiluna', hint: 'The big one. Curious about colour.', text: 'Swims toward spilled ink and drinks it. Whatever colour it drank, it keeps.' },
     { id: 'ribbon', name: 'Ribbon Wraith', hint: 'Long, and not fond of fast hands.', text: 'Trails a slow pointer like a dog on a lead. Flick the pointer and it coils away.' },
+    { id: 'snake', name: 'Ribbon Wraith, fed', hint: 'Switch on Feed and lead the ribbon to the pearls.', text: 'Each pearl makes it longer. If it touches itself it tangles, then starts again from short.' },
     { id: 'sprites', name: 'Glass Sprites', hint: 'Small, and always watching.', text: 'Scatter when anything comes near. They are best at leaving.' },
     { id: 'bloom', name: 'Bloomling', hint: 'Rooted on the left. Opens in its own time.', text: 'Shuts like a fist when something gets close, then opens again once it has been left alone.' },
     { id: 'spore', name: 'Velvet Spore', hint: 'Drifting on the right. Try touching it.', text: 'Click it and it bursts. It takes a few seconds to gather itself back up.' },
-    { id: 'quiet', name: 'When it’s quiet', hint: 'Press and hold the hush button.', text: 'Hold still and the sprites forget to be shy. They come over to see what you are.' }
+    { id: 'bubbles', name: 'Bubbles', hint: 'The small ones rising from the sand.', text: 'Click one and it pops. They rise from three vents in the sand.' },
+    { id: 'quiet', name: 'When it’s quiet', hint: 'Switch Hush on, then keep the pointer near the sprites.', text: 'With Hush on, the sound goes muffled and the sprites stop being shy. They come over to see what you are.' }
   ];
   const listEl = $('#list');
   function renderNotes(newId) {
@@ -150,7 +284,7 @@
     $('#count').textContent = `${seen.size} of ${NOTES.length} seen`;
     $('#count2').textContent = `${seen.size}/${NOTES.length}`;
   }
-  function see(id) { if (seen.has(id)) return; seen.add(id); renderNotes(id); }
+  function see(id) { if (seen.has(id)) return; seen.add(id); renderNotes(id); Snd.chime(); buzz([10, 40, 10]); }
 
   // ---------- step ----------
   function step(dt) {
@@ -160,6 +294,7 @@
     const sdt = dt * speedMul, k = sdt * 60;
     ptr.speed *= Math.exp(-dt * 3);
     currentPhase += sdt * 0.25; weedPhase += sdt * 0.9;
+    for (let i = ripples.length - 1; i >= 0; i--) { ripples[i].age += dt; if (ripples[i].age > 1.4) ripples.splice(i, 1); }
 
     // ink drops
     for (let i = drops.length - 1; i >= 0; i--) {
@@ -178,6 +313,7 @@
     // jelly
     {
       J.ph += sdt * 1.7;
+      const cyc = Math.floor(J.ph / 6.2832); if (cyc !== J.cyc) { J.cyc = cyc; Snd.thump(); }
       const pu = Math.sin(J.ph), ws = 1 - 0.07 * pu;
       let tgt = null, best = 1e9;
       for (const d of drops) if (d.age < 9) { const dd = Math.hypot(d.x - J.x, d.y - J.y); if (dd < best) { best = dd; tgt = d; } }
@@ -196,6 +332,10 @@
           for (let i = 1; i < p.length; i++) {
             const q = p[i], vx = (q.x - q.px) * 0.93, vy = (q.y - q.py) * 0.93;
             q.px = q.x; q.py = q.y;
+            if (ptr.on && ptr.speed > 40) {
+              const ddx = q.x - ptr.x, ddy = q.y - ptr.y, dd = Math.hypot(ddx, ddy), reach = 80 * S;
+              if (dd < reach && dd > 0.1) { const f = Math.min(ptr.speed, 700) * 0.0045 * (1 - dd / reach) * k; q.x += ddx / dd * f; q.y += ddy / dd * f; }
+            }
             q.x += vx * 0.9 + Math.sin(T * 1.1 + i * 0.35 + tn.ph) * 0.05 * k * (0.3 + cur);
             q.y += vy * 0.9 + 0.09 * k * S;
           }
@@ -220,15 +360,30 @@
       } else {
         RB.mode = 'wander'; [tx, ty] = wanderPt(RB, 0.09, W * 0.08, W * 0.92, H * 0.12, H * 0.6); speed = 60 * S;
       }
-      let diff = Math.atan2(ty - h.y, tx - h.x) - RB.ang;
-      diff = Math.atan2(Math.sin(diff), Math.cos(diff));
-      RB.ang += clamp(diff, -turn * sdt, turn * sdt);
-      const v = Math.max(speed, 14 * S) * sdt;
-      h.x += Math.cos(RB.ang) * v; h.y += Math.sin(RB.ang) * v;
-      h.x = clamp(h.x, 10, W - 10); h.y = clamp(h.y, 20, bedY(h.x) - 40 * S);
-      for (let i = 1; i < RB.p.length; i++) {
-        const q = RB.p[i], pr = RB.p[i - 1]; const dx = q.x - pr.x, dy = q.y - pr.y, l = Math.hypot(dx, dy) || 1;
-        q.x = pr.x + dx / l * 10 * S; q.y = pr.y + dy / l * 10 * S;
+      if (game.on) {
+        // snake rules: it never stops, and it steers toward the pointer or the arrow keys
+        tx = ptr.on ? ptr.x : ptr.lx; ty = ptr.on ? ptr.y : ptr.ly; speed = 150 * S; turn = 3.2; RB.mode = 'follow';
+        if (keys.size) {
+          const kx = (keys.has('r') ? 1 : 0) - (keys.has('l') ? 1 : 0), ky = (keys.has('d') ? 1 : 0) - (keys.has('u') ? 1 : 0);
+          if (kx || ky) { tx = h.x + kx * 200; ty = h.y + ky * 200; }
+        }
+      }
+      if (game.on && game.dead > 0) {
+        game.dead -= dt;
+        if (game.dead <= 0) { resetRibbon(20); game.grace = 1.5; setHud(); }
+      } else {
+        let diff = Math.atan2(ty - h.y, tx - h.x) - RB.ang;
+        diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+        RB.ang += clamp(diff, -turn * sdt, turn * sdt);
+        const v = Math.max(speed, 14 * S) * sdt;
+        h.x += Math.cos(RB.ang) * v; h.y += Math.sin(RB.ang) * v;
+        h.x = clamp(h.x, 10, W - 10); h.y = clamp(h.y, 20, bedY(h.x) - 40 * S);
+        Snd.ribbon(RB.mode !== 'wander', h.y / H, speed / (150 * S));
+        for (let i = 1; i < RB.p.length; i++) {
+          const q = RB.p[i], pr = RB.p[i - 1]; const dx = q.x - pr.x, dy = q.y - pr.y, l = Math.hypot(dx, dy) || 1;
+          q.x = pr.x + dx / l * 10 * S; q.y = pr.y + dy / l * 10 * S;
+        }
+        if (game.on) gameCheck(h, dt);
       }
     }
 
@@ -243,18 +398,20 @@
         const edge = 80;
         if (s.x < edge) wx += 60; if (s.x > W - edge) wx -= 60; if (s.y < edge) wy += 60; if (s.y > bedY(s.x) - 90 * S) wy -= 70;
         const d = Math.hypot(ptr.x - s.x, ptr.y - s.y);
-        if (ptr.on && hushAmt > 0.5) {
-          const ring = 70 * S, dd = d || 1;
-          wx += (ptr.x - s.x) / dd * (dd - ring) * 0.9; wy += (ptr.y - s.y) / dd * (dd - ring) * 0.9;
-          if (d < 110 * S && hushAmt > 0.7) { SP.q = (SP.q || 0) + dt; if (SP.q > 1.2) see('quiet'); }
+        const hx = ptr.on ? ptr.x : W / 2, hy = ptr.on ? ptr.y : H * 0.45;
+        const ss = hushAmt > 0.3 ? Math.max(sdt, dt * 0.6) : sdt;
+        if (hushAmt > 0.5) {
+          const ring = 70 * S, dh = Math.hypot(hx - s.x, hy - s.y) || 1;
+          wx += (hx - s.x) / dh * (dh - ring) * 0.9; wy += (hy - s.y) / dh * (dh - ring) * 0.9;
+          if (ptr.on && dh < 110 * S && hushAmt > 0.7) { SP.q = (SP.q || 0) + dt; if (SP.q > 1.2) see('quiet'); }
         } else if (ptr.on && d < 150 * S && hushAmt < 0.5) {
-          wx += (s.x - ptr.x) / d * 260 * S; wy += (s.y - ptr.y) / d * 260 * S; see('sprites');
+          wx += (s.x - ptr.x) / d * 260 * S; wy += (s.y - ptr.y) / d * 260 * S; see('sprites'); Snd.tik();
         }
-        const a = Math.min(1, sdt * 3);
+        const a = Math.min(1, ss * 3);
         s.vx += (wx - s.vx) * a; s.vy += (wy - s.vy) * a;
         const sp = Math.hypot(s.vx, s.vy), mx = 150 * S; if (sp > mx) { s.vx *= mx / sp; s.vy *= mx / sp; }
-        s.x += s.vx * sdt; s.y += s.vy * sdt;
-        if (sp > 6) { let da = Math.atan2(s.vy, s.vx) - s.rot; da = Math.atan2(Math.sin(da), Math.cos(da)); s.rot += da * Math.min(1, sdt * 6); }
+        s.x += s.vx * ss; s.y += s.vy * ss;
+        if (sp > 6) { let da = Math.atan2(s.vy, s.vx) - s.rot; da = Math.atan2(Math.sin(da), Math.cos(da)); s.rot += da * Math.min(1, ss * 6); }
       }
       if (!(ptr.on && hushAmt > 0.7)) SP.q = 0;
     }
@@ -266,6 +423,7 @@
       const near = ptr.on && Math.hypot(ptr.x - BL.cx, ptr.y - BL.cy) < 200 * S;
       if (near) BL.hold = 2.5; BL.hold -= dt;
       const target = BL.hold > 0 ? 0 : 1;
+      if (BL.prevT !== target) { if (BL.prevT !== undefined) Snd.breath(target === 1); BL.prevT = target; }
       BL.open += (target - BL.open) * Math.min(1, dt * (target ? 1.2 : 3.5));
       if (BL.open < 0.3) see('bloom');
     }
@@ -285,7 +443,7 @@
             q.x += (tx - q.x) * kk; q.y += (ty - q.y) * kk;
           }
         }
-        if (SPORE.bt > 5) SPORE.burst = false;
+        if (SPORE.bt > 5) { SPORE.burst = false; Snd.reform(); }
       }
     }
 
@@ -305,6 +463,7 @@
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     ctx.globalCompositeOperation = 'source-over';
     ctx.fillStyle = rgba(WATER, 1); ctx.fillRect(0, 0, W, H);
+    if (hushAmt > 0.01) { ctx.fillStyle = rgba(INK[0], 0.1 * hushAmt); ctx.fillRect(0, 0, W, H); }
     eyes.length = 0;
 
     // current lines
@@ -316,6 +475,11 @@
       ctx.stroke();
     }
 
+    for (const r of ripples) {
+      const k = r.age / 1.4;
+      ctx.strokeStyle = `rgba(60,100,130,${(0.35 * (1 - k)).toFixed(3)})`; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(r.x, r.y, 6 + k * 46 * S, 0, 6.2832); ctx.stroke();
+    }
     ctx.globalCompositeOperation = 'multiply';
 
     // ink drops
@@ -325,7 +489,7 @@
       blob(d.x + 1.6, d.y - 1.2, d.r * 1.1, d.seed + 3); ctx.setLineDash([3, 6]); ctx.lineWidth = 1.3; ctx.strokeStyle = rgba(c, 0.8 * fade); ctx.stroke(); ctx.setLineDash([]);
     }
 
-    drawBed(); drawWeeds(); drawBloom(); drawSpore(); drawSprites(); drawRibbon(); drawJelly();
+    drawBed(); drawWeeds(); drawBloom(); drawSpore(); drawSprites(); if (game.on && game.pearl) drawPearl(); drawRibbon(); drawJelly();
 
     ctx.globalCompositeOperation = 'source-over';
     ctx.fillStyle = rgba(WATER, 1);
@@ -437,10 +601,11 @@
   }
 
   function drawRibbon() {
+    if (game.on && game.dead > 0 && Math.floor(T * 10) % 2) return;
     const p = RB.p;
     ctx.beginPath(); taper(ctx, p, 12 * S, 1, 7 * S); ctx.fillStyle = rgba(RB.c1, 0.94); ctx.fill();
     ctx.save(); ctx.translate(1.8, -1.3); ctx.setLineDash([5, 8]); ctx.lineWidth = 2.4; ctx.strokeStyle = rgba(RB.c2, 1);
-    ctx.beginPath(); smoothLine(ctx, p.slice(2, 30)); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+    ctx.beginPath(); smoothLine(ctx, p.slice(2, Math.max(4, p.length - 4))); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
     ctx.fillStyle = rgba(RB.c1, 0.96); ctx.beginPath(); ctx.arc(p[0].x, p[0].y, 10 * S, 0, 6.2832); ctx.fill();
     ctx.fillStyle = rgba(RB.c2, 0.9); ctx.beginPath(); ctx.arc(p[0].x + 1.8, p[0].y - 1.3, 4.5 * S, 0, 6.2832); ctx.fill();
     eyes.push({ x: p[0].x + Math.cos(RB.ang) * 4 * S, y: p[0].y + Math.sin(RB.ang) * 4 * S - 2 * S, r: 2.4 * S });
@@ -482,35 +647,59 @@
     if (onUI(e)) { ptr.on = false; return; }
     const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, now = performance.now();
     if (ptr.on) { const dt = (now - ptr.t) / 1000; if (dt > 0) { const inst = Math.hypot(x - ptr.x, y - ptr.y) / dt; ptr.speed = ptr.speed * 0.7 + inst * 0.3; } }
-    ptr.x = x; ptr.y = y; ptr.t = now; ptr.on = true;
+    ptr.x = x; ptr.y = y; ptr.t = now; ptr.on = true; ptr.lx = x; ptr.ly = y;
+    if (ptr.speed > 120 && now - lastRip > 110) { lastRip = now; ripples.push({ x, y, age: 0 }); }
+    if (pour && Math.hypot(x - pour.x, y - pour.y) > 36 * S) {
+      pour.x = x; pour.y = y;
+      if (y < bedY(x) + 10) { addDrop(x, y, selInk, (45 + Math.random() * 20) * S); Snd.drip(selInk); }
+    }
   });
   window.addEventListener('pointerdown', e => {
     if (onUI(e)) return;
     const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
-    ptr.x = x; ptr.y = y; ptr.t = performance.now(); ptr.on = true;
-    if (ready && !SPORE.burst && Math.hypot(x - SPORE.x, y - SPORE.y) < SPORE.r * 1.9 + 10) {
-      SPORE.burst = true; SPORE.bt = 0; SPORE.parts = [];
-      for (let i = 0; i < 16; i++) { const a = i / 16 * 6.2832, sp = (170 + Math.random() * 130) * S; SPORE.parts.push({ x: SPORE.x, y: SPORE.y, vx: Math.cos(a + Math.random() * 0.3) * sp, vy: Math.sin(a + Math.random() * 0.3) * sp, a }); }
-      see('spore'); return;
+    ptr.x = x; ptr.y = y; ptr.t = performance.now(); ptr.on = true; ptr.lx = x; ptr.ly = y;
+    if (ready) {
+      for (let i = bubbles.length - 1; i >= 0; i--) {
+        const b = bubbles[i];
+        if (Math.hypot(x - b.x, y - b.y) < b.r + 14) { bubbles.splice(i, 1); ripples.push({ x: b.x, y: b.y, age: 0 }); Snd.pop(); buzz(8); see('bubbles'); return; }
+      }
+      if (!SPORE.burst && Math.hypot(x - SPORE.x, y - SPORE.y) < SPORE.r * 1.9 + 10) {
+        SPORE.burst = true; SPORE.bt = 0; SPORE.parts = [];
+        for (let i = 0; i < 16; i++) { const a = i / 16 * 6.2832, sp = (170 + Math.random() * 130) * S; SPORE.parts.push({ x: SPORE.x, y: SPORE.y, vx: Math.cos(a + Math.random() * 0.3) * sp, vy: Math.sin(a + Math.random() * 0.3) * sp, a }); }
+        see('spore'); Snd.burst(); buzz([15, 30, 15]); return;
+      }
     }
-    if (y < bedY(x) + 10) drops.push({ x, y, ink: selInk, age: 0, r: 0, max: (105 + Math.random() * 35) * S, seed: Math.random() * 1000, hit: new Set() });
+    if (y < bedY(x) + 10) {
+      addDrop(x, y, selInk, (105 + Math.random() * 35) * S);
+      Snd.bloop(selInk); buzz(12); ripples.push({ x, y, age: 0 }); pour = { x, y };
+    }
     if (e.pointerType === 'touch') setTimeout(() => { ptr.on = false; }, 700);
   });
+  window.addEventListener('pointerup', () => { pour = null; });
+  window.addEventListener('pointercancel', () => { pour = null; });
   document.addEventListener('pointerleave', () => { ptr.on = false; });
-  window.addEventListener('blur', () => { hush = false; $('#hush').classList.remove('on'); });
 
   document.querySelectorAll('.pot').forEach(b => b.addEventListener('click', () => {
     selInk = +b.dataset.ink;
     document.querySelectorAll('.pot').forEach(o => o.setAttribute('aria-checked', o === b ? 'true' : 'false'));
   }));
-  const hushBtn = $('#hush');
-  const setHush = v => { hush = v; hushBtn.classList.toggle('on', v); };
-  hushBtn.addEventListener('pointerdown', e => { setHush(true); try { hushBtn.setPointerCapture(e.pointerId); } catch (_) {} });
-  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => hushBtn.addEventListener(n, () => setHush(false)));
-  hushBtn.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); setHush(true); } });
-  hushBtn.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') setHush(false); });
-  window.addEventListener('keydown', e => { if (e.key === 'h' && !e.repeat && e.target === document.body) setHush(true); });
-  window.addEventListener('keyup', e => { if (e.key === 'h') setHush(false); });
+  const hushBtn = $('#hush'), soundBtn = $('#sound');
+  const setHush = v => { hush = v; hushBtn.setAttribute('aria-pressed', v ? 'true' : 'false'); Snd.hush(v); buzz(18); };
+  hushBtn.addEventListener('click', () => setHush(!hush));
+  soundBtn.addEventListener('click', () => {
+    const v = soundBtn.getAttribute('aria-pressed') !== 'true';
+    soundBtn.setAttribute('aria-pressed', v ? 'true' : 'false'); Snd.enable(v); if (v) Snd.bloop(1);
+  });
+  window.addEventListener('keydown', e => { if (e.key === 'h' && !e.repeat && e.target === document.body) setHush(!hush); });
+  const gameBtn = $('#game');
+  gameBtn.addEventListener('click', () => {
+    const v = gameBtn.getAttribute('aria-pressed') !== 'true';
+    gameBtn.setAttribute('aria-pressed', v ? 'true' : 'false'); setGame(v); buzz(10);
+  });
+  const KEYMAP = { arrowleft: 'l', a: 'l', arrowright: 'r', d: 'r', arrowup: 'u', w: 'u', arrowdown: 'd', s: 'd' };
+  window.addEventListener('keydown', e => { const k = KEYMAP[e.key.toLowerCase()]; if (k && game.on) { keys.add(k); if (e.key.startsWith('Arrow')) e.preventDefault(); } });
+  window.addEventListener('keyup', e => { const k = KEYMAP[e.key.toLowerCase()]; if (k) keys.delete(k); });
+  window.addEventListener('blur', () => keys.clear());
 
   $('#notesToggle').addEventListener('click', () => {
     const o = $('#notes').classList.toggle('open'); $('#notesToggle').setAttribute('aria-expanded', o ? 'true' : 'false');
