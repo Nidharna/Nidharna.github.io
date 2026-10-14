@@ -1,0 +1,111 @@
+/* Layout: one full-bleed tank. Title top-left, a field-notes sheet top-right, a small ink tray bottom-left.
+     Look: three-ink print on pale water. Shapes overlap with multiply, so blue + yellow makes green, pink + blue makes plum.
+     This page commits to one look, so it keeps a single light palette. */
+  :root {
+    --water: #cfe4da;
+    --blue: #2b3cb5;
+    --pink: #ff5e9c;
+    --yellow: #ffd23d;
+    --paper: #f4eedc;
+    --text: #1f2a7a;
+    --muted: #4b5596;
+    --display: 'Caprasimo', 'Cooper Black', Georgia, serif;
+    --mono: 'Courier Prime', 'Courier New', monospace;
+    color-scheme: light;
+  }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--water);
+    color: var(--text);
+    font-family: var(--mono);
+    overflow: hidden;
+  }
+  .stage {
+    position: relative;
+    height: 100%;
+    box-sizing: border-box;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  #tank {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    display: block; touch-action: none; background: var(--water);
+  }
+  .ui {
+    position: relative; height: 100%; box-sizing: border-box;
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto 1fr auto;
+    column-gap: 24px; padding-block: 20px;
+    pointer-events: none;
+  }
+  .title { grid-column: 1; grid-row: 1; min-width: 0; }
+  .title h1 {
+    margin: 0; font-family: var(--display); font-weight: 400;
+    font-size: clamp(2.1rem, 5.2vw, 4.4rem); line-height: 0.98; letter-spacing: -0.01em;
+    max-width: 9.5em; text-wrap: balance;
+    color: var(--blue);
+    text-shadow: 0.045em 0.045em 0 var(--pink);
+  }
+  .title p {
+    margin: 18px 0 0; max-width: 31ch; font-size: 0.95rem; line-height: 1.45; color: var(--text);
+  }
+  .notes { grid-column: 2; grid-row: 1; align-self: start; pointer-events: auto; position: relative; }
+  .panel {
+    background: var(--paper); border: 2px solid var(--blue); border-radius: 0;
+    pointer-events: auto;
+  }
+  .sheet { width: 310px; padding: 14px 16px 16px; box-shadow: 6px 6px 0 var(--pink); transform: rotate(0.5deg); }
+  .sheet-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+  .sheet-head h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 1.15rem; color: var(--blue); }
+  .count { font-size: 0.78rem; letter-spacing: 0.04em; color: var(--muted); }
+  .sheet ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
+  .sheet li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 10px; padding: 2px 4px; margin: -2px -4px; }
+  .tick { width: 12px; height: 12px; margin-top: 3px; border: 2px solid var(--blue); background: transparent; }
+  li.seen .tick { background: var(--pink); }
+  .nm { display: block; font-weight: 700; font-size: 0.86rem; }
+  li:not(.seen) .nm { color: var(--muted); font-weight: 400; }
+  .tx { display: block; margin-top: 2px; font-size: 0.8rem; line-height: 1.38; }
+  li:not(.seen) .tx { color: var(--muted); font-style: italic; }
+  li.new { animation: flash 1.6s ease-out 1; }
+  @keyframes flash { 0% { background: var(--yellow); } 100% { background: transparent; } }
+  .notes-toggle { display: none; }
+
+  .tray {
+    grid-column: 1 / -1; grid-row: 3; justify-self: start;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px;
+    padding: 10px 14px; box-shadow: 5px 5px 0 var(--yellow); max-width: 100%; box-sizing: border-box;
+  }
+  .grp { display: flex; align-items: center; gap: 10px; }
+  .lab { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .pot {
+    width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--text); padding: 0; cursor: pointer;
+    outline: 0 solid transparent; outline-offset: 3px; transition: outline-width 0.12s;
+  }
+  .pot[aria-checked="true"] { outline: 3px solid var(--text); }
+  .pot[data-ink="0"] { background: var(--blue); }
+  .pot[data-ink="1"] { background: var(--pink); }
+  .pot[data-ink="2"] { background: var(--yellow); }
+  input[type="range"] { width: 110px; accent-color: var(--blue); }
+  .hush {
+    font: 700 0.8rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text);
+    background: transparent; border: 2px solid var(--blue); border-radius: 0; padding: 8px 12px; cursor: pointer;
+    user-select: none; -webkit-user-select: none; touch-action: none;
+  }
+  .hush.on { background: var(--pink); }
+  button:focus-visible, input:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
+
+  @media (max-width: 720px) {
+    .ui { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto 1fr auto; padding-block: 14px; }
+    .title h1 { max-width: 8em; }
+    .notes { grid-column: 1; grid-row: 2; margin-top: 14px; justify-self: start; }
+    .notes-toggle {
+      display: inline-block; font: 700 0.8rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text); background: var(--paper); border: 2px solid var(--blue); padding: 8px 12px;
+      box-shadow: 4px 4px 0 var(--pink); cursor: pointer; border-radius: 0;
+    }
+    .sheet { display: none; position: absolute; top: calc(100% + 10px); left: 0; width: min(340px, calc(100vw - 32px)); max-height: 60vh; overflow: auto; z-index: 3; }
+    .notes.open .sheet { display: block; }
+    .tray { grid-row: 4; gap: 10px 14px; padding: 8px 10px; }
+    .tray .grp:first-child .lab { display: none; }
+    input[type="range"] { width: 76px; }
+  }
+  @media (prefers-reduced-motion: reduce) { li.new { animation: none; } }

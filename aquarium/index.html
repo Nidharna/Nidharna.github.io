@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>An Aquarium for Things That Don&rsquo;t Exist</title>
+<meta name="description" content="An interactive tank of six invented creatures. Drop ink, move slowly, and fill in the field notes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stage">
+  <canvas id="tank" role="img" aria-label="A tank of five invented sea creatures that react to your pointer: a jellyfish, a ribbon, a small shoal, a flower and a spiky spore."></canvas>
+  <div class="ui">
+    <header class="title">
+      <h1>An aquarium for things that don&rsquo;t exist</h1>
+      <p>Six creatures that aren&rsquo;t real. Pick an ink, click the water, and move the pointer slowly.</p>
+    </header>
+
+    <aside class="notes" id="notes">
+      <button class="notes-toggle" id="notesToggle" aria-expanded="false" aria-controls="sheet">Field notes <span id="count2">0/6</span></button>
+      <section class="sheet panel" id="sheet" aria-label="Field notes">
+        <div class="sheet-head"><h2>Field notes</h2><span class="count" id="count">0 of 6 seen</span></div>
+        <ol id="list"></ol>
+      </section>
+    </aside>
+
+    <div class="tray panel">
+      <div class="grp" role="radiogroup" aria-label="Ink colour">
+        <span class="lab">Ink</span>
+        <button class="pot" data-ink="0" role="radio" aria-checked="false" aria-label="Blue ink"></button>
+        <button class="pot" data-ink="1" role="radio" aria-checked="true" aria-label="Pink ink"></button>
+        <button class="pot" data-ink="2" role="radio" aria-checked="false" aria-label="Yellow ink"></button>
+      </div>
+      <label class="grp" for="current"><span class="lab">Current</span><input id="current" type="range" min="0" max="100" value="50"></label>
+      <button class="hush" id="hush" type="button">Hold to hush</button>
+    </div>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
