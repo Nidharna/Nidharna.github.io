@@ -48,6 +48,13 @@
   .title p {
     margin: 18px 0 0; max-width: 31ch; font-size: 0.95rem; line-height: 1.45; color: var(--text);
   }
+  .back {
+    display: inline-block; margin: 0 0 16px;
+    font: 700 0.72rem var(--mono); letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text); text-decoration: none; padding: 7px 11px; box-shadow: 4px 4px 0 var(--pink);
+  }
+  .back:hover { background: var(--yellow); }
+  .back:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
   .notes { grid-column: 2; grid-row: 1; align-self: start; pointer-events: auto; position: relative; }
   .panel {
     background: var(--paper); border: 2px solid var(--blue); border-radius: 0;
